@@ -32,29 +32,15 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20 px-6 rounded-lg">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6">Take Control of Your Health Journey</h1>
-          <p className="text-xl mb-8">Track your weight, body fat, and progress with our comprehensive fitness dashboard</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
-              <Scale className="w-5 h-5" />
-              <span>Weight Tracking</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
-              <TrendingUp className="w-5 h-5" />
-              <span>Progress Charts</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
-              <Calculator className="w-5 h-5" />
-              <span>Health Calculators</span>
-            </div>
-          </div>
+          <h1 className="text-5xl font-bold mb-6">Weightly</h1>
+          <p className="text-s mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
         </div>
       </section>
 
       {/* Features Section */}
       <section className="py-16">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Powerful Features for Your Health Journey</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">Made to Help Your Health Journey</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="text-center">
               <Scale className="w-12 h-12 text-blue-600 mx-auto mb-4" />
@@ -78,7 +64,7 @@ const HomePage = () => {
       {/* Articles Section */}
       <section className="py-16 bg-gray-50 rounded-lg">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">Health & Fitness Articles</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">Articles</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {articles.map((article, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
