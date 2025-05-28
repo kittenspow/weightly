@@ -1,0 +1,104 @@
+import React from 'react';
+import { Scale, Calculator, Target, ChevronRight, TrendingUp } from 'lucide-react';
+import Card from '../components/Card';
+
+const HomePage = () => {
+// mock articles (nanti article nya dibikin beneran)
+  const articles = [
+    {
+      title: "Understanding BMI and Its Limitations",
+      excerpt: "Learn why BMI is a useful starting point but not the complete picture of your health.",
+      category: "Health Basics"
+    },
+    {
+      title: "The Science Behind Body Fat Percentage",
+      excerpt: "Discover why body fat percentage is often more important than weight alone.",
+      category: "Fitness"
+    },
+    {
+      title: "Creating a Sustainable Weight Loss Plan",
+      excerpt: "Tips for setting realistic goals and maintaining long-term success.",
+      category: "Weight Loss"
+    },
+    {
+      title: "Nutrition Basics for Body Composition",
+      excerpt: "How to fuel your body for optimal performance and health.",
+      category: "Nutrition"
+    }
+  ];
+
+  return (
+    <div className="space-y-12">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20 px-6 rounded-lg">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-6">Take Control of Your Health Journey</h1>
+          <p className="text-xl mb-8">Track your weight, body fat, and progress with our comprehensive fitness dashboard</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
+              <Scale className="w-5 h-5" />
+              <span>Weight Tracking</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
+              <TrendingUp className="w-5 h-5" />
+              <span>Progress Charts</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
+              <Calculator className="w-5 h-5" />
+              <span>Health Calculators</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Powerful Features for Your Health Journey</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="text-center">
+              <Scale className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-3">Weight & Body Fat Tracking</h3>
+              <p className="text-gray-600">Monitor your progress with daily weight and body fat percentage tracking using the US Navy method.</p>
+            </Card>
+            <Card className="text-center">
+              <Calculator className="w-12 h-12 text-green-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-3">Health Calculators</h3>
+              <p className="text-gray-600">Calculate BMI, body fat percentage, and TDEE with our accurate, science-based calculators.</p>
+            </Card>
+            <Card className="text-center">
+              <Target className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-3">Goal Setting</h3>
+              <p className="text-gray-600">Set and track your weight and body composition goals with visual progress indicators.</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Articles Section */}
+      <section className="py-16 bg-gray-50 rounded-lg">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl font-bold text-center mb-12">Health & Fitness Articles</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {articles.map((article, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="flex justify-between items-start mb-3">
+                  <span className="text-sm font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                    {article.category}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold mb-3">{article.title}</h3>
+                <p className="text-gray-600 mb-4">{article.excerpt}</p>
+                <div className="flex items-center text-blue-600 font-medium">
+                  Read More <ChevronRight className="w-4 h-4 ml-1" />
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default HomePage;
