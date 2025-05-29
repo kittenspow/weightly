@@ -1,6 +1,5 @@
-// src/App.jsx
 import React, { useState } from 'react';
-import { Scale, Calculator, TrendingUp, User, Heart } from 'lucide-react';
+import { Calculator, TrendingUp, User, Heart } from 'lucide-react';
 import { AuthProvider, useAuth } from './features/auth/AuthContext'; // Menggunakan AuthProvider dan useAuth dari mock
 import { LoginForm, RegisterForm } from './features/auth/AuthForms';
 import HomePage from './pages/Home';
@@ -10,9 +9,7 @@ import ProfilePage from './pages/Profile';
 import Card from './components/Card';
 import Button from './components/Button';
 
-/**
- * Main application component responsible for routing and overall layout.
- */
+
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [showAuth, setShowAuth] = useState(false);
@@ -39,7 +36,7 @@ const App = () => {
         <Card className="max-w-md mx-auto text-center">
           <h1 className="text-3xl font-bold mb-4">Welcome to Weight Tracker</h1>
           <p className="text-gray-600 mb-6">
-            Track your weight, body fat, and health goals with our comprehensive fitness app.
+            Start your journey now!
           </p>
           <div className="space-y-3">
             <Button
@@ -80,8 +77,8 @@ const App = () => {
       onClick={() => setCurrentPage(page)}
       className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
         currentPage === page
-          ? 'bg-blue-600 text-white'
-          : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+          ? 'bg-white text-primary-blue'
+          : 'text-white hover:text-primary-blue hover:bg-white'
       }`}
     >
       <Icon className="w-4 h-4" />
@@ -102,12 +99,13 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
+
       {/* Navigation Bar */}
-      <nav className="bg-white shadow-sm border-b">
+      <nav className="bg-primary-blue border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <span className="text-xl font-bold text-gray-900">Weightly</span>
+              <span className="text-3xl font-bold text-white">Weightly</span>
             </div>
 
             <div className="flex space-x-1">

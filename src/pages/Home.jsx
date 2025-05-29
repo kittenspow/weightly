@@ -1,6 +1,7 @@
 import React from 'react';
 import { Scale, Calculator, Target, ChevronRight, TrendingUp } from 'lucide-react';
 import Card from '../components/Card';
+import weightlyVector from '../assets/weightly_vector.png';
 
 const HomePage = () => {
 // mock articles (nanti article nya dibikin beneran)
@@ -30,10 +31,17 @@ const HomePage = () => {
   return (
     <div className="space-y-12">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20 px-6 rounded-lg">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="flex flex-col md:flex-row items-center justify-between gap-12 py-20 px-6 max-w-6xl mx-auto text-primary-blue">
+        <div className='flex-shrink-0 mb-8 md:mb-0 md:w-1/2 flex justify-center'>
+          <img src={weightlyVector} alt='weightly'
+            className='w-40 h-auto object-cover md:w-72 -rotate-[20deg] hover:rotate-[20deg] transition ease-in-out duration-500'/>
+        </div>
+        <div className="text-center md:text-left md:w-1/2">
           <h1 className="text-5xl font-bold mb-6">Weightly</h1>
           <p className="text-s mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+          <button className="bg-primary-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+            Learn more
+          </button>
         </div>
       </section>
 

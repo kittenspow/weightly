@@ -125,11 +125,53 @@ const ProfilePage = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Profile Settings</h1>
+        <h1 className="text-3xl font-bold">Profile</h1>
         <Button onClick={signOut} variant="secondary">
           Sign Out
         </Button>
       </div>
+
+      <Card>
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Heart className="w-5 h-5 text-red-600" />
+          Health Summary
+        </h3>
+        <div className="grid md:grid-cols-4 gap-4">
+          <div className="text-center p-4 bg-blue-50 rounded-md">
+            <p className="text-sm text-gray-600">Current BMI</p>
+            <p className="text-xl font-bold text-blue-600">
+              {user?.profile?.currentWeight && user?.profile?.height
+                ? calculateBMI(user.profile.currentWeight, user.profile.height).toFixed(1)
+                : '-'
+              }
+            </p>
+          </div>
+          <div className="text-center p-4 bg-green-50 rounded-md">
+            <p className="text-sm text-gray-600">Weight to Goal</p>
+            <p className="text-xl font-bold text-green-600">
+              {user?.profile?.currentWeight && user?.profile?.goalWeight
+                ? `${Math.abs(user.profile.currentWeight - user.profile.goalWeight).toFixed(1)} kg`
+                : '-'
+              }
+            </p>
+          </div>
+          <div className="text-center p-4 bg-purple-50 rounded-md">
+            <p className="text-sm text-gray-600">Body Fat to Goal</p>
+            <p className="text-xl font-bold text-purple-600">
+              {user?.profile?.currentBodyFat && user?.profile?.goalBodyFat
+                ? `${Math.abs(user.profile.currentBodyFat - user.profile.goalBodyFat).toFixed(1)}%`
+                : '-'
+              }
+            </p>
+          </div>
+          <div className="text-center p-4 bg-orange-50 rounded-md">
+            <p className="text-sm text-gray-600">Goal Type</p>
+            <p className="text-xl font-bold text-orange-600 capitalize">
+              {user?.profile?.goal?.replace('_', ' ')}
+            </p>
+          </div>
+        </div>
+      </Card>
 
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
@@ -286,48 +328,6 @@ const ProfilePage = () => {
           </form>
         </Card>
       </div>
-
-      <Card>
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Heart className="w-5 h-5 text-red-600" />
-          Health Summary
-        </h3>
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="text-center p-4 bg-blue-50 rounded-md">
-            <p className="text-sm text-gray-600">Current BMI</p>
-            <p className="text-xl font-bold text-blue-600">
-              {user?.profile?.currentWeight && user?.profile?.height
-                ? calculateBMI(user.profile.currentWeight, user.profile.height).toFixed(1)
-                : '-'
-              }
-            </p>
-          </div>
-          <div className="text-center p-4 bg-green-50 rounded-md">
-            <p className="text-sm text-gray-600">Weight to Goal</p>
-            <p className="text-xl font-bold text-green-600">
-              {user?.profile?.currentWeight && user?.profile?.goalWeight
-                ? `${Math.abs(user.profile.currentWeight - user.profile.goalWeight).toFixed(1)} kg`
-                : '-'
-              }
-            </p>
-          </div>
-          <div className="text-center p-4 bg-purple-50 rounded-md">
-            <p className="text-sm text-gray-600">Body Fat to Goal</p>
-            <p className="text-xl font-bold text-purple-600">
-              {user?.profile?.currentBodyFat && user?.profile?.goalBodyFat
-                ? `${Math.abs(user.profile.currentBodyFat - user.profile.goalBodyFat).toFixed(1)}%`
-                : '-'
-              }
-            </p>
-          </div>
-          <div className="text-center p-4 bg-orange-50 rounded-md">
-            <p className="text-sm text-gray-600">Goal Type</p>
-            <p className="text-xl font-bold text-orange-600 capitalize">
-              {user?.profile?.goal?.replace('_', ' ')}
-            </p>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 };

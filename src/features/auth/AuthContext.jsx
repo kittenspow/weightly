@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect} from 'react';
 
-// hy karin, ini masih mock yeah
+// hy karin, ini masih data dummy yeah
+// pls ak ga ngerti firebase, tolong yh hiks
 
 // mock firebase function
 const mockAuth = {

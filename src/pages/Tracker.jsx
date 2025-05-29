@@ -9,7 +9,7 @@ import { useTrackerData } from '../features/tracker/TrackerHooks';
 import { calculateBMI, calculateBodyFatNavy } from '../lib/utils';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { z } from 'zod'; // for form validation
 
 // weight entry
 const weightEntrySchema = z.object({
@@ -25,7 +25,7 @@ const bodyFatManualEntrySchema = z.object({
 const bodyFatNavyEntrySchema = z.object({
     waist: z.number().min(1, "Waist is required"),
     neck: z.number().min(1, "Neck is required"),
-    hip: z.number().optional(), // Optional for males
+    hip: z.number().optional(), // optional for males
   }).superRefine((data, ctx) => {
     if (data.gender === 'female' && !data.hip) {
       ctx.addIssue({
@@ -64,7 +64,7 @@ const TrackerPage = () => {
     const bfNavyWaist = watchBfNavy('waist');
     const bfNavyNeck = watchBfNavy('neck');
     const bfNavyHip = watchBfNavy('hip');
-    const bfNavyGender = user?.profile?.gender || 'male'; // get gender from user profile
+    const bfNavyGender = user?.profile?.gender || 'male'; // get gender from user profile. If null, set to male
 
     const calculateNavyBodyFat = bfNavyWaist & bfNavyNeck && user?.profile?.height && (bfNavyGender === 'male' || bfNavyHip)
         ? calculateBodyFatNavy(
