@@ -48,7 +48,7 @@ const HomePage = () => {
       {/* Features Section */}
       <section className="py-16">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Made to Help Your Health Journey</h2>
+          <h2 className="text-3xl text-primary-blue font-bold text-center mb-12">Made to Help Your Health Journey</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="text-center">
               <Scale className="w-12 h-12 text-blue-600 mx-auto mb-4" />
@@ -72,7 +72,7 @@ const HomePage = () => {
       {/* Articles Section */}
       <section className="py-16 bg-gray-50 rounded-lg">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">Articles</h2>
+          <h2 className="text-3xl text-primary-blue font-bold text-center mb-12">Articles</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {articles.map((article, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
