@@ -35,12 +35,13 @@ const CalculatorPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-primary-blue">Calculators</h1>
-
-      <div className="flex gap-2 mb-6">
-        <TabButton id="bmi" active={activeCalculator === 'bmi'}>BMI Calculator</TabButton>
-        <TabButton id="bodyfat" active={activeCalculator === 'bodyfat'}>Body Fat Calculator</TabButton>
-        <TabButton id="tdee" active={activeCalculator === 'tdee'}>TDEE Calculator</TabButton>
+      <div className='flex justify-between items-center'>
+        <h1 className="text-3xl font-bold text-blue-text">Calculators</h1>
+        <div className="flex gap-2">
+          <TabButton id="bmi" active={activeCalculator === 'bmi'}>BMI Calculator</TabButton>
+          <TabButton id="bodyfat" active={activeCalculator === 'bodyfat'}>Body Fat Calculator</TabButton>
+          <TabButton id="tdee" active={activeCalculator === 'tdee'}>TDEE Calculator</TabButton>
+        </div>
       </div>
 
       {/* render the active calculator component */}

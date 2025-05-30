@@ -78,7 +78,7 @@ const TrackerPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-primary-blue">Tracker</h1>
+        <h1 className="text-3xl font-bold text-blue-text">Tracker</h1>
         <div className="flex gap-2">
           <TabButton id="overview" active={activeTab === 'overview'}>Overview</TabButton>
           <TabButton id="entry" active={activeTab === 'entry'}>New Entry</TabButton>

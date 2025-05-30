@@ -8,6 +8,11 @@ module.exports = {
       colors: {
         'primary-blue': '#4E58DE',
         'secondary-blue': '#949CFF',
+        'blue-text': '#454ECF',
+      },
+      fontFamily: {
+        'lexend': ['Lexend', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif'],
       },
     },
   },

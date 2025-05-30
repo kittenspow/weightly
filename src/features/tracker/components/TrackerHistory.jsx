@@ -5,7 +5,7 @@ import { calculateBMI } from '../../../lib/utils';
 import { useAuth } from '../../auth/AuthContext'; // to get user's data (height)
 
 /**
- * TrackerHistory component displays a table of combined weight and body fat entries.
+ * TrackerHistory component
  * @param {object} props - Component props.
  * @param {Array} props.combinedEntries - Array of combined weight and body fat entries.
  * @param {string} props.filterDate - Current date filter string.
