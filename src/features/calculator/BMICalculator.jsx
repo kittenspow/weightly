@@ -38,6 +38,14 @@ const BMICalculator = () => {
       <Card>
         <h3 className="text-lg font-semibold mb-4">BMI Calculator</h3>
         <form onSubmit={handleSubmit(onCalculateBMI)}>
+        <Input
+            label="Height (cm)"
+            type="number"
+            placeholder="Enter your height"
+            register={register}
+            name="height"
+            error={errors.height}
+          />
           <Input
             label="Weight (kg)"
             type="number"
@@ -45,14 +53,6 @@ const BMICalculator = () => {
             register={register}
             name="weight"
             error={errors.weight}
-          />
-          <Input
-            label="Height (cm)"
-            type="number"
-            placeholder="Enter your height"
-            register={register}
-            name="height"
-            error={errors.height}
           />
           <Button type="submit" className="w-full mt-4">Calculate BMI</Button>
           {calculatedBMIResult !== null && (
