@@ -3,7 +3,7 @@ import { User, Target, Heart } from 'lucide-react';
 import Card from '../components/Card';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { useAuth } from '../features/auth/AuthContext'; 
+import { useAuth } from '../features/auth/AuthContext'; // menggunakan AuthContext mock
 import { calculateBMI } from '../lib/utils';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,7 +16,9 @@ const profileSchema = z.object({
   age: z.number().min(1, "Age must be at least 1").max(120, "Age seems too high").int("Age must be an integer"),
   gender: z.enum(['male', 'female']),
   height: z.number().min(50, "Height must be at least 50 cm").max(250, "Height seems too high").int("Height must be an integer"),
+  currentWeight: z.number().min(1, "Current weight is required").max(300, "Weight seems too high"),
   goalWeight: z.number().min(1, "Goal weight is required").max(300, "Weight seems too high"),
+  currentBodyFat: z.number().min(0, "Current body fat cannot be negative").max(100, "Body fat seems too high"),
   goalBodyFat: z.number().min(0, "Goal body fat cannot be negative").max(100, "Body fat seems too high"),
   goal: z.enum(['weight_loss', 'maintain', 'weight_gain']),
 });
@@ -46,7 +48,9 @@ const ProfilePage = () => {
       age: user?.profile?.age || '',
       gender: user?.profile?.gender || 'male',
       height: user?.profile?.height || '',
+      currentWeight: user?.profile?.currentWeight || '',
       goalWeight: user?.profile?.goalWeight || '',
+      currentBodyFat: user?.profile?.currentBodyFat || '',
       goalBodyFat: user?.profile?.goalBodyFat || '',
       goal: user?.profile?.goal || 'maintain'
     }
@@ -62,7 +66,9 @@ const ProfilePage = () => {
         age: user.profile?.age || '',
         gender: user.profile?.gender || 'male',
         height: user.profile?.height || '',
+        currentWeight: user.profile?.currentWeight || '',
         goalWeight: user.profile?.goalWeight || '',
+        currentBodyFat: user.profile?.currentBodyFat || '',
         goalBodyFat: user.profile?.goalBodyFat || '',
         goal: user.profile?.goal || 'maintain'
       });
@@ -79,7 +85,9 @@ const ProfilePage = () => {
         age: parseFloat(data.age),
         gender: data.gender,
         height: parseFloat(data.height),
+        currentWeight: parseFloat(data.currentWeight),
         goalWeight: parseFloat(data.goalWeight),
+        currentBodyFat: parseFloat(data.currentBodyFat),
         goalBodyFat: parseFloat(data.goalBodyFat),
         goal: data.goal,
       };
@@ -149,7 +157,7 @@ const ProfilePage = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-primary-blue">Profile</h1>
+        <h1 className="text-3xl font-bold">Profile</h1>
         <Button onClick={signOut} variant="secondary">
           Sign Out
         </Button>
@@ -370,12 +378,28 @@ const ProfilePage = () => {
               {errors.goal && <p className="text-red-500 text-xs mt-1">{errors.goal.message}</p>}
             </div>
             <Input
+              label="Current Weight (kg)"
+              type="number"
+              disabled={!isEditing}
+              register={register}
+              name="currentWeight"
+              error={errors.currentWeight}
+            />
+            <Input
               label="Goal Weight (kg)"
               type="number"
               disabled={!isEditing}
               register={register}
               name="goalWeight"
               error={errors.goalWeight}
+            />
+            <Input
+              label="Current Body Fat (%)"
+              type="number"
+              disabled={!isEditing}
+              register={register}
+              name="currentBodyFat"
+              error={errors.currentBodyFat}
             />
             <Input
               label="Goal Body Fat (%)"
