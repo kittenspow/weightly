@@ -32,6 +32,13 @@ const ProfilePage = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [passwordError, setPasswordError] = useState(null);
   const [profileUpdateError, setProfileUpdateError] = useState(null);
+  const [showEmailChange, setShowEmailChange] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [currentPasswordForEmail, setCurrentPasswordForEmail] = useState('');
+  const [emailError, setEmailError] = useState(null);
+  const [currentPasswordForPassword, setCurrentPasswordForPassword] = useState(''); // NEW
+
+
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(profileSchema),
@@ -55,6 +62,7 @@ const ProfilePage = () => {
       reset({
         name: user.displayName || '',
         email: user.email || '',
+
         age: user.profile?.age || '',
         gender: user.profile?.gender || 'male',
         height: user.profile?.height || '',
@@ -64,17 +72,13 @@ const ProfilePage = () => {
         goalBodyFat: user.profile?.goalBodyFat || '',
         goal: user.profile?.goal || 'maintain'
       });
+      setNewEmail(user.email || '');
     }
   }, [user, reset, isEditing]);
 
   const handleSave = async (data) => {
     setProfileUpdateError(null);
     try {
-      // update email if changed
-      if (user.email !== data.email) {
-        await updateUserEmail(data.email);
-      }
-
       // prepare profile data to save to AuthContext 
       const profileToSave = {
         name: data.name,
@@ -111,14 +115,42 @@ const ProfilePage = () => {
       setPasswordError("Password must be at least 6 characters long.");
       return;
     }
+    if (!currentPasswordForPassword) {
+      setPasswordError("Current password is required.");
+      return;
+    }
     try {
-      await updateUserPassword(newPassword);
+      await updateUserPassword(newPassword, currentPasswordForPassword); // UPDATED - now requires current password
       setNewPassword('');
       setConfirmNewPassword('');
+      setCurrentPasswordForPassword('');
       setShowPasswordChange(false);
     } catch (error) {
       setPasswordError(error.message || "Failed to change password.");
       console.error("Password change error:", error);
+    }
+  };
+
+  const handleChangeEmail = async () => {
+    setEmailError(null);
+    if (!newEmail) {
+      setEmailError("New email is required.");
+      return;
+    }
+    if (!currentPasswordForEmail) {
+      setEmailError("Current password is required.");
+      return;
+    }
+    if (newEmail === user?.email) {
+      setEmailError("New email must be different from current email.");
+      return;
+    }
+    try {
+      await updateUserEmail(newEmail, currentPasswordForEmail); // Uses new signature
+      setCurrentPasswordForEmail('');
+      setShowEmailChange(false);
+    } catch (error) {
+      setEmailError(error.message || "Failed to change email.");
     }
   };
 
@@ -206,14 +238,59 @@ const ProfilePage = () => {
               name="name"
               error={errors.name}
             />
-            <Input
-              label="Email"
-              type="email"
-              disabled={!isEditing}
-              register={register}
-              name="email"
-              error={errors.email}
-            />
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  value={user?.email || ''}
+                  disabled
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-100"
+                />
+                <Button
+                  onClick={() => setShowEmailChange(!showEmailChange)}
+                  variant="secondary"
+                  type="button"
+                >
+                  Change
+                </Button>
+              </div>
+            </div>
+            {showEmailChange && (
+              <div className="mb-4 p-4 border border-gray-200 rounded-md bg-gray-50">
+                <Input
+                  label="New Email"
+                  type="email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  placeholder="Enter new email"
+                />
+                <Input
+                  label="Current Password"
+                  type="password"
+                  value={currentPasswordForEmail}
+                  onChange={(e) => setCurrentPasswordForEmail(e.target.value)}
+                  placeholder="Enter current password"
+                />
+                {emailError && <p className="text-red-500 text-sm mb-4">{emailError}</p>}
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleChangeEmail}
+                    variant="primary"
+                  >
+                    Update Email
+                  </Button>
+                  <Button
+                    onClick={() => setShowEmailChange(false)}
+                    variant="secondary"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
             <Input
               label="Age"
               type="number"
@@ -250,6 +327,13 @@ const ProfilePage = () => {
             </Button>
             {showPasswordChange && (
               <div className="mt-4 p-4 border border-gray-200 rounded-md bg-gray-50">
+                <Input
+                  label="Current Password"
+                  type="password"
+                  value={currentPasswordForPassword}
+                  onChange={(e) => setCurrentPasswordForPassword(e.target.value)}
+                  placeholder="Enter current password"
+                />
                 <Input
                   label="New Password"
                   type="password"
