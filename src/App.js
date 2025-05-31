@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calculator, TrendingUp, User, Heart } from 'lucide-react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './features/auth/AuthContext'; // Menggunakan AuthProvider dan useAuth dari mock
 import { LoginForm, RegisterForm } from './features/auth/AuthForms';
 import HomePage from './pages/Home';
@@ -8,10 +8,10 @@ import CalculatorPage from './pages/Calculator';
 import ProfilePage from './pages/Profile';
 import Card from './components/Card';
 import Button from './components/Button';
+import Navbar from './components/Navbar';
 
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('home');
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState('login');
   const { user, loading } = useAuth();
@@ -29,7 +29,7 @@ const App = () => {
   }
 
   // Show authentication screen if no user is logged in and auth forms are not yet shown
-  // For mock, 'user' will initially be null, then quickly become the mock user
+  // create a seperated component file for authentication page next time (like log in and register page)
   if (!user && !showAuth) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -71,56 +71,20 @@ const App = () => {
     );
   }
 
-  // Navigation button component
-  const NavButton = ({ page, children, icon: Icon }) => (
-    <button
-      onClick={() => setCurrentPage(page)}
-      className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
-        currentPage === page
-          ? 'bg-white text-primary-blue'
-          : 'text-white hover:text-primary-blue hover:bg-white'
-      }`}
-    >
-      <Icon className="w-4 h-4" />
-      {children}
-    </button>
-  );
-
-  // Render the current page based on state
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home': return <HomePage />;
-      case 'tracker': return <TrackerPage />;
-      case 'calculator': return <CalculatorPage />;
-      case 'profile': return <ProfilePage />;
-      default: return <HomePage />;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
 
       {/* Navigation Bar */}
-      <nav className="bg-primary-blue border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <span className="text-3xl font-bold text-white">Weightly</span>
-            </div>
-
-            <div className="flex space-x-1">
-              <NavButton page="home" icon={Heart}>Home</NavButton>
-              <NavButton page="tracker" icon={TrendingUp}>Tracker</NavButton>
-              <NavButton page="calculator" icon={Calculator}>Calculator</NavButton>
-              <NavButton page="profile" icon={User}>Profile</NavButton>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar/>
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {renderPage()}
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/calculator" element={<CalculatorPage />} />
+            <Route path="/tracker" element={<TrackerPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
       </main>
     </div>
   );
@@ -131,7 +95,9 @@ const App = () => {
 export default function WeightTrackerApp() {
   return (
     <AuthProvider>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </AuthProvider>
   );
 }
