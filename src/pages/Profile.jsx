@@ -158,9 +158,25 @@ const ProfilePage = () => {
     <div className="space-y-6 font-poppins">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold font-lexend text-blue-text">Profile</h1>
-        <Button onClick={signOut} variant="secondary">
-          Sign Out
-        </Button>
+        <div className='flex gap-4 items-center'>
+            {!isEditing ? (
+              <Button onClick={() => setIsEditing(true)} variant="secondary">
+                Edit Profile
+              </Button>
+            ) : (
+              <div className="flex gap-2">
+                <Button onClick={handleSubmit(handleSave)} variant="success">
+                  Save
+                </Button>
+                <Button onClick={handleCancel} variant="secondary">
+                  Cancel
+                </Button>
+              </div>
+            )}
+          <Button onClick={signOut} variant="danger">
+            Sign Out
+          </Button>
+        </div>
       </div>
 
       {/* Health summary card */}
@@ -173,20 +189,6 @@ const ProfilePage = () => {
               <User className="w-5 h-5 text-blue-600" />
               Personal Information
             </h3>
-            {!isEditing ? (
-              <Button onClick={() => setIsEditing(true)} variant="secondary">
-                Edit
-              </Button>
-            ) : (
-              <div className="flex gap-2">
-                <Button onClick={handleSubmit(handleSave)} variant="success">
-                  Save
-                </Button>
-                <Button onClick={handleCancel} variant="secondary">
-                  Cancel
-                </Button>
-              </div>
-            )}
           </div>
 
           {profileUpdateError && <p className="text-red-500 text-sm mb-4">{profileUpdateError}</p>}
@@ -339,28 +341,12 @@ const ProfilePage = () => {
               {errors.goal && <p className="text-red-500 text-xs mt-1">{errors.goal.message}</p>}
             </div>
             <Input
-              label="Current Weight (kg)"
-              type="number"
-              disabled={!isEditing}
-              register={register}
-              name="currentWeight"
-              error={errors.currentWeight}
-            />
-            <Input
               label="Goal Weight (kg)"
               type="number"
               disabled={!isEditing}
               register={register}
               name="goalWeight"
               error={errors.goalWeight}
-            />
-            <Input
-              label="Current Body Fat (%)"
-              type="number"
-              disabled={!isEditing}
-              register={register}
-              name="currentBodyFat"
-              error={errors.currentBodyFat}
             />
             <Input
               label="Goal Body Fat (%)"
