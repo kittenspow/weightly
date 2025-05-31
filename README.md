@@ -6,7 +6,7 @@ Frontend: ReactJS, TailwindCSS
 
 Backend: Firebase
 
-### Installation
+## Installation
 Prerequisites:
 1. Node.js and npm
 2. Git
