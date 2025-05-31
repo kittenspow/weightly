@@ -76,10 +76,10 @@ const TrackerPage = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-blue-text">Tracker</h1>
-        <div className="flex gap-2">
+    <div className="space-y-6 font-poppins">
+      <div className="flex justify-between items-center grid grid-row-2 sm:grid-cols-2">
+        <h1 className="text-3xl font-bold font-lexend text-blue-text">Tracker</h1>
+        <div className="flex gap-2 justify-end mt-3 sm:mt-0">
           <TabButton id="overview" active={activeTab === 'overview'}>Overview</TabButton>
           <TabButton id="entry" active={activeTab === 'entry'}>New Entry</TabButton>
         </div>

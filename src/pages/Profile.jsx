@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { User, Target, Heart } from 'lucide-react';
+import { User, Target } from 'lucide-react';
 import Card from '../components/Card';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { useAuth } from '../features/auth/AuthContext'; // menggunakan AuthContext mock
-import { calculateBMI } from '../lib/utils';
+import { useAuth } from '../features/auth/AuthContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import HealthSummary from '../features/profile/HealthSummary';
 
 // zod schema for profile validation
 const profileSchema = z.object({
@@ -155,55 +155,16 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-poppins">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Profile</h1>
+        <h1 className="text-3xl font-bold font-lexend text-blue-text">Profile</h1>
         <Button onClick={signOut} variant="secondary">
           Sign Out
         </Button>
       </div>
 
-      <Card>
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Heart className="w-5 h-5 text-red-600" />
-          Health Summary
-        </h3>
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="text-center p-4 bg-blue-50 rounded-md">
-            <p className="text-sm text-gray-600">Current BMI</p>
-            <p className="text-xl font-bold text-blue-600">
-              {user?.profile?.currentWeight && user?.profile?.height
-                ? calculateBMI(user.profile.currentWeight, user.profile.height).toFixed(1)
-                : '-'
-              }
-            </p>
-          </div>
-          <div className="text-center p-4 bg-green-50 rounded-md">
-            <p className="text-sm text-gray-600">Weight to Goal</p>
-            <p className="text-xl font-bold text-green-600">
-              {user?.profile?.currentWeight && user?.profile?.goalWeight
-                ? `${Math.abs(user.profile.currentWeight - user.profile.goalWeight).toFixed(1)} kg`
-                : '-'
-              }
-            </p>
-          </div>
-          <div className="text-center p-4 bg-purple-50 rounded-md">
-            <p className="text-sm text-gray-600">Body Fat to Goal</p>
-            <p className="text-xl font-bold text-purple-600">
-              {user?.profile?.currentBodyFat && user?.profile?.goalBodyFat
-                ? `${Math.abs(user.profile.currentBodyFat - user.profile.goalBodyFat).toFixed(1)}%`
-                : '-'
-              }
-            </p>
-          </div>
-          <div className="text-center p-4 bg-orange-50 rounded-md">
-            <p className="text-sm text-gray-600">Goal Type</p>
-            <p className="text-xl font-bold text-orange-600 capitalize">
-              {user?.profile?.goal?.replace('_', ' ')}
-            </p>
-          </div>
-        </div>
-      </Card>
+      {/* Health summary card */}
+      <HealthSummary/> 
 
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
