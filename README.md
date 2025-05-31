@@ -3,6 +3,7 @@ Software Engineering project.
 
 ## Tech Stack
 Frontend: ReactJS, TailwindCSS
+
 Backend: Firebase
 
 ### Installation
