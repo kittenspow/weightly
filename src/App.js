@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider, useAuth } from './features/auth/AuthContext'; // Menggunakan AuthProvider dan useAuth dari mock
+import { AuthProvider, useAuth } from './features/auth/AuthContext'; 
 import { LoginForm, RegisterForm } from './features/auth/AuthForms';
 import HomePage from './pages/Home';
 import TrackerPage from './pages/Tracker';

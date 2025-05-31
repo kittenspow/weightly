@@ -31,19 +31,19 @@ const HealthSummary = () => {
                     </p>
                 </div>
                 <div className="text-center p-4 bg-green-50 rounded-md">
-                    <p className="text-sm text-gray-600">Weight to Goal</p>
+                    <p className="text-sm text-gray-600">Current Weight</p>
                     <p className="text-xl font-bold text-green-600">
                     {user?.profile?.currentWeight && user?.profile?.goalWeight
-                        ? `${Math.abs(user.profile.currentWeight - user.profile.goalWeight).toFixed(1)} kg`
+                        ? `${user.profile.currentWeight.toFixed(1)} kg`
                         : '-'
                     }
                     </p>
                 </div>
                 <div className="text-center p-4 bg-purple-50 rounded-md">
-                    <p className="text-sm text-gray-600">Body Fat to Goal</p>
+                    <p className="text-sm text-gray-600">Current Body Fat</p>
                     <p className="text-xl font-bold text-purple-600">
                     {user?.profile?.currentBodyFat && user?.profile?.goalBodyFat
-                        ? `${Math.abs(user.profile.currentBodyFat - user.profile.goalBodyFat).toFixed(1)}%`
+                        ? `${user.profile.currentBodyFat.toFixed(1)}%`
                         : '-'
                     }
                     </p>

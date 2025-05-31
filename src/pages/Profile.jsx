@@ -321,7 +321,7 @@ const ProfilePage = () => {
         <Card>
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Target className="w-5 h-5 text-green-600" />
-            Goals & Measurements
+            Your Goals
           </h3>
 
           <form onSubmit={handleSubmit(handleSave)}>
