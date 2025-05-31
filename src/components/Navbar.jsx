@@ -1,23 +1,26 @@
 import React from 'react'
+import { Link, useLocation } from 'react-router-dom';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Calculator, TrendingUp, User, Heart } from 'lucide-react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 
-const Navbar = ({ currentPage, onPageChange }) => {
+const Navbar = () => {
 
-    const NavButton = ({ page, children, icon: Icon }) => (
-        <button 
-            onClick={() => onPageChange(page)}
+    const location = useLocation();
+
+    const NavButton = ({ to, children, icon: Icon }) => (
+        <Link 
+            to={to}
             className={`flex items-center gap-2 px-4 py-2 w-full rounded-md font-poppins font-medium transition-colors ${
-                currentPage === page
+                location.pathname === to
                   ? 'bg-white text-primary-blue'
                   : 'text-white hover:text-primary-blue hover:bg-white/85'
             }`} 
         > 
           <Icon className="w-5 h-5" />
           {children}
-        </button>
+        </Link>
     );
 
 
@@ -30,7 +33,6 @@ const Navbar = ({ currentPage, onPageChange }) => {
                     {/* Mobile menu button*/}
                     <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-1 text-white hover:bg-white hover:text-primary-blue focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
                         <span className="absolute -inset-0.5" />
-                        <span className="sr-only">Open main menu</span>
                         <Bars3Icon aria-hidden="true" className="block size-8 group-data-open:hidden" />
                         <XMarkIcon aria-hidden="true" className="hidden size-8 group-data-open:block" />
                     </DisclosureButton>
@@ -45,10 +47,10 @@ const Navbar = ({ currentPage, onPageChange }) => {
                 <div className="flex flex-1 items-center justify-end">
                     <div className="hidden sm:ml-6 md:block font-poppins justify-end">
                         <div className="flex space-x-4">
-                            <NavButton page="home" icon={Heart}>Home</NavButton>
-                            <NavButton page="tracker" icon={TrendingUp}>Tracker</NavButton>
-                            <NavButton page="calculator" icon={Calculator}>Calculator</NavButton>
-                            <NavButton page="profile" icon={User}>Profile</NavButton>
+                            <NavButton to="/" icon={Heart}>Home</NavButton>
+                            <NavButton to="/calculator" icon={Calculator}>Calculator</NavButton>
+                            <NavButton to="/tracker" icon={TrendingUp}>Tracker</NavButton>
+                            <NavButton to="/profile" icon={User}>Profile</NavButton>
                         </div>
                     </div>
                 </div>
@@ -58,10 +60,10 @@ const Navbar = ({ currentPage, onPageChange }) => {
             {/* hamburger menu  */}
             <DisclosurePanel className="md:hidden">
                 <div className="space-y-1 px-2 pt-2 pb-3">
-                    <NavButton page="home" icon={Heart}>Home</NavButton>
-                    <NavButton page="tracker" icon={TrendingUp}>Tracker</NavButton>
-                    <NavButton page="calculator" icon={Calculator}>Calculator</NavButton>
-                    <NavButton page="profile" icon={User}>Profile</NavButton>
+                    <NavButton to="/" icon={Heart}>Home</NavButton>
+                    <NavButton to="/calculator" icon={Calculator}>Calculator</NavButton>
+                    <NavButton to="/tracker" icon={TrendingUp}>Tracker</NavButton>
+                    <NavButton to="/profile" icon={User}>Profile</NavButton>
                 </div>
             </DisclosurePanel>
         </Disclosure>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './features/auth/AuthContext'; // Menggunakan AuthProvider dan useAuth dari mock
 import { LoginForm, RegisterForm } from './features/auth/AuthForms';
 import HomePage from './pages/Home';
@@ -11,14 +12,9 @@ import Navbar from './components/Navbar';
 
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('home');
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState('login');
   const { user, loading } = useAuth();
-
-  const handlePageChange = (currentPage) => {
-    setCurrentPage(currentPage);
-  };
 
   // Show loading spinner while authentication state is being determined
   if (loading) {
@@ -75,26 +71,20 @@ const App = () => {
     );
   }
 
-  // Render the current page based on state
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home': return <HomePage />;
-      case 'tracker': return <TrackerPage />;
-      case 'calculator': return <CalculatorPage />;
-      case 'profile': return <ProfilePage />;
-      default: return <HomePage />;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
 
       {/* Navigation Bar */}
-      <Navbar currentPage={currentPage} onPageChange={handlePageChange}/>
+      <Navbar/>
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {renderPage()}
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/calculator" element={<CalculatorPage />} />
+            <Route path="/tracker" element={<TrackerPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
       </main>
     </div>
   );
@@ -105,7 +95,9 @@ const App = () => {
 export default function WeightTrackerApp() {
   return (
     <AuthProvider>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </AuthProvider>
   );
 }
