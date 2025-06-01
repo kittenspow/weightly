@@ -57,12 +57,12 @@ const BodyFatEntryForm = ({ onAddBodyFatEntry }) => {
 
   const calculatedNavyBodyFat = bfNavyWaist && bfNavyNeck && user?.profile?.height && (bfNavyGender === 'male' || bfNavyHip)
     ? calculateBodyFatNavy(
-        bfNavyGender,
-        parseFloat(bfNavyWaist),
-        parseFloat(bfNavyNeck),
-        parseFloat(bfNavyHip) || 0,
-        user.profile.height
-      )
+      bfNavyGender,
+      parseFloat(bfNavyWaist),
+      parseFloat(bfNavyNeck),
+      parseFloat(bfNavyHip) || 0,
+      user.profile.height
+    )
     : null;
 
   const handleBodyFatEntry = async (data) => {
