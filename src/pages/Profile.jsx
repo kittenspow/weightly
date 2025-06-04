@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Target } from 'lucide-react';
+import { User, Target, AlertTriangle } from 'lucide-react';
 import Card from '../components/Card';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -21,6 +21,23 @@ const profileSchema = z.object({
   currentBodyFat: z.number().min(0, "Current body fat cannot be negative").max(100, "Body fat seems too high"),
   goalBodyFat: z.number().min(0, "Goal body fat cannot be negative").max(100, "Body fat seems too high"),
   goal: z.enum(['weight_loss', 'maintain', 'weight_gain']),
+}).superRefine((data, ctx) => {
+  // Custom validation for goals without current data
+  if (data.goalWeight && !data.currentWeight) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Please set your current weight before setting a goal weight",
+      path: ['goalWeight'],
+    });
+  }
+
+  if (data.goalBodyFat && !data.currentBodyFat) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Please set your current body fat before setting a goal body fat",
+      path: ['goalBodyFat'],
+    });
+  }
 });
 
 // profile page component
@@ -36,11 +53,12 @@ const ProfilePage = () => {
   const [newEmail, setNewEmail] = useState('');
   const [currentPasswordForEmail, setCurrentPasswordForEmail] = useState('');
   const [emailError, setEmailError] = useState(null);
-  const [currentPasswordForPassword, setCurrentPasswordForPassword] = useState(''); // NEW
+  const [currentPasswordForPassword, setCurrentPasswordForPassword] = useState('');
+  const [showGoalWarning, setShowGoalWarning] = useState(false);// NEW
 
 
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       name: user?.displayName || '',
@@ -55,6 +73,25 @@ const ProfilePage = () => {
       goal: user?.profile?.goal || 'maintain'
     }
   });
+
+  const currentWeight = watch('currentWeight');
+  const currentBodyFat = watch('currentBodyFat');
+  const goalWeight = watch('goalWeight');
+  const goalBodyFat = watch('goalBodyFat');
+
+  // Check if user is missing current data
+  const missingCurrentWeight = !currentWeight || currentWeight === '';
+  const missingCurrentBodyFat = !currentBodyFat || currentBodyFat === '';
+  const hasGoalWeight = goalWeight && goalWeight !== '';
+  const hasGoalBodyFat = goalBodyFat && goalBodyFat !== '';
+
+  useEffect(() => {
+    if (isEditing && ((hasGoalWeight && missingCurrentWeight) || (hasGoalBodyFat && missingCurrentBodyFat))) {
+      setShowGoalWarning(true);
+    } else {
+      setShowGoalWarning(false);
+    }
+  }, [isEditing, hasGoalWeight, missingCurrentWeight, hasGoalBodyFat, missingCurrentBodyFat]);
 
   // reset form with user data when user object changes or editing stops
   useEffect(() => {
@@ -78,6 +115,12 @@ const ProfilePage = () => {
 
   const handleSave = async (data) => {
     setProfileUpdateError(null);
+
+    if ((data.goalWeight && !data.currentWeight) || (data.goalBodyFat && !data.currentBodyFat)) {
+      setProfileUpdateError("Please set your current weight and body fat before setting goals. Use the tracker to log your current measurements.");
+      return;
+    }
+
     try {
       // prepare profile data to save to AuthContext 
       const profileToSave = {
@@ -103,6 +146,7 @@ const ProfilePage = () => {
     reset(); // reset form to current user data
     setIsEditing(false);
     setProfileUpdateError(null);
+    setShowGoalWarning(false);
   };
 
   const handleChangePassword = async () => {
@@ -159,29 +203,54 @@ const ProfilePage = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold font-lexend text-blue-text">Profile</h1>
         <div className='flex gap-4 items-center'>
-            {!isEditing ? (
-              <Button onClick={() => setIsEditing(true)} variant="secondary">
-                Edit Profile
+          {!isEditing ? (
+            <Button onClick={() => setIsEditing(true)} variant="secondary">
+              Edit Profile
+            </Button>
+          ) : (
+            <div className="flex gap-2">
+              <Button onClick={handleSubmit(handleSave)} variant="success">
+                Save
               </Button>
-            ) : (
-              <div className="flex gap-2">
-                <Button onClick={handleSubmit(handleSave)} variant="success">
-                  Save
-                </Button>
-                <Button onClick={handleCancel} variant="secondary">
-                  Cancel
-                </Button>
-              </div>
-            )}
+              <Button onClick={handleCancel} variant="secondary">
+                Cancel
+              </Button>
+            </div>
+          )}
           <Button onClick={signOut} variant="danger">
             Sign Out
           </Button>
         </div>
       </div>
 
+      {showGoalWarning && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
+            <div>
+              <h3 className="text-sm font-medium text-yellow-800">Missing Current Measurements</h3>
+              <p className="text-sm text-yellow-700 mt-1">
+                We recommend logging your current weight and body fat using the tracker before setting goals.
+                This helps you track your progress more effectively.
+              </p>
+              <div className="mt-2">
+                <Button
+                  onClick={() => window.location.href = '/tracker'}
+                  variant="secondary"
+                  size="sm"
+                  className="text-yellow-800 border-yellow-300 hover:bg-yellow-100"
+                >
+                  Go to Tracker
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Health summary card */}
-      <HealthSummary/> 
-      
+      <HealthSummary />
+
       {/* User information  */}
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
