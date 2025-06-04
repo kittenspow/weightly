@@ -4,13 +4,11 @@ import { db } from "../../firebase.js";
 import {
     collection,
     doc,
-    addDoc,
+    setDoc,
     query,
     orderBy,
     onSnapshot,
-    updateDoc,
-    Timestamp,
-    setDoc
+    Timestamp
 } from "firebase/firestore";
 
 
@@ -96,17 +94,21 @@ export const useTrackerData = () => {
         // return () => { unsubscribeWeight(); unsubscribeBodyFat(); };
     }, [authLoading, userId]); // depends on authLoading and userId to re-fetch
 
+    const getTodayDateString = () => {
+        const today = new Date();
+        return today.getFullYear() + '-' +
+            String(today.getMonth() + 1).padStart(2, '0') + '-' +
+            String(today.getDate()).padStart(2, '0');
+    };
 
     const updateCurrentWeight = async (newWeight) => {
         try {
-            // Update user profile document
             const userRef = doc(db, "users", userId);
             await setDoc(userRef, {
                 currentWeight: parseFloat(newWeight),
                 updatedAt: new Date().toISOString()
             }, { merge: true });
 
-            // Also update local auth context
             if (updateProfileData) {
                 await updateProfileData({ currentWeight: parseFloat(newWeight) });
             }
@@ -117,17 +119,16 @@ export const useTrackerData = () => {
         }
     };
 
+
     // Helper function to update current body fat in user profile
     const updateCurrentBodyFat = async (newBodyFat) => {
         try {
-            // Update user profile document
             const userRef = doc(db, "users", userId);
             await setDoc(userRef, {
                 currentBodyFat: parseFloat(newBodyFat),
                 updatedAt: new Date().toISOString()
             }, { merge: true });
 
-            // Also update local auth context
             if (updateProfileData) {
                 await updateProfileData({ currentBodyFat: parseFloat(newBodyFat) });
             }
@@ -146,20 +147,24 @@ export const useTrackerData = () => {
 
         try {
             setError(null);
-            const newEntry = {
+            const todayDateString = getTodayDateString();
+
+            // Use date string as document ID to ensure one entry per day
+            const docRef = doc(db, "users", userId, "weightEntries", todayDateString);
+
+            const entryData = {
                 weight: parseFloat(weight),
                 date: Timestamp.fromDate(new Date()),
-                createdAt: Timestamp.fromDate(new Date())
+                dateString: todayDateString // For easy querying
             };
 
-            // Add to user's weightEntries subcollection
-            const docRef = await addDoc(collection(db, "users", userId, "weightEntries"), newEntry);
+            // This will create new document or overwrite existing one for today
+            await setDoc(docRef, entryData);
 
             // Update current weight in user profile
             await updateCurrentWeight(weight);
 
-            console.log('Weight entry added with ID:', docRef.id);
-
+            console.log('Weight entry added/updated for today:', todayDateString);
         } catch (error) {
             console.error('Error adding weight entry:', error);
             setError("Failed to add weight entry.");
@@ -174,78 +179,36 @@ export const useTrackerData = () => {
 
         try {
             setError(null);
-            const newEntry = {
+            const todayDateString = getTodayDateString();
+
+            // Use date string as document ID to ensure one entry per day
+            const docRef = doc(db, "users", userId, "bodyFatEntries", todayDateString);
+
+            const entryData = {
                 bodyFat: parseFloat(bodyFat),
                 date: Timestamp.fromDate(new Date()),
-                createdAt: Timestamp.fromDate(new Date())
+                dateString: todayDateString // For easy querying
             };
 
-            // Add to user's bodyFatEntries subcollection
-            const docRef = await addDoc(collection(db, "users", userId, "bodyFatEntries"), newEntry);
+            // This will create new document or overwrite existing one for today
+            await setDoc(docRef, entryData);
 
             // Update current body fat in user profile
             await updateCurrentBodyFat(bodyFat);
 
-            console.log("Body fat entry added with ID:", docRef.id);
-            // No need to update local state - onSnapshot will handle it
+            console.log("Body fat entry added/updated for today:", todayDateString);
         } catch (error) {
             console.error("Error adding body fat entry:", error);
             setError("Failed to add body fat entry.");
         }
     };
 
-    const updateWeightEntry = async (entryId, newWeight) => {
-        if (!userId) {
-            setError("Please log in first.");
-            return;
-        }
-
-        try {
-            setError(null);
-            const entryRef = doc(db, "users", userId, "weightEntries", entryId);
-            await updateDoc(entryRef, {
-                weight: parseFloat(newWeight),
-                updatedAt: Timestamp.fromDate(new Date())
-            });
-            // Update current weight in user profile if this is the latest entry
-            if (weightEntries.length > 0 && weightEntries[0].id === entryId) {
-                await updateCurrentWeight(newWeight);
-            }
-
-            console.log("Weight entry updated:", entryId);
-        } catch (error) {
-            console.error("Error updating weight entry:", error);
-            setError("Failed to update weight entry.");
-        }
-    };
-
-    const updateBodyFatEntry = async (entryId, newBodyFat) => {
-        if (!userId) {
-            setError("Please log in first.");
-            return;
-        }
-
-        try {
-            setError(null);
-            const entryRef = doc(db, "users", userId, "bodyFatEntries", entryId);
-            await updateDoc(entryRef, {
-                bodyFat: parseFloat(newBodyFat),
-                updatedAt: Timestamp.fromDate(new Date())
-            });
-            // Update current body fat in user profile if this is the latest entry
-            if (bodyFatEntries.length > 0 && bodyFatEntries[0].id === entryId) {
-                await updateCurrentBodyFat(newBodyFat);
-            }
-
-            console.log("Body fat entry updated:", entryId);
-        } catch (error) {
-            console.error("Error updating body fat entry:", error);
-            setError("Failed to update body fat entry.");
-        }
-    };
-
     const latestWeight = weightEntries.length > 0 ? weightEntries[0] : null;
     const latestBodyFat = bodyFatEntries.length > 0 ? bodyFatEntries[0] : null;
 
-    return { weightEntries, latestWeight, latestBodyFat, bodyFatEntries, addWeightEntry, addBodyFatEntry, updateWeightEntry, updateBodyFatEntry, loading, error };
+    const todayDateString = getTodayDateString();
+    const hasTodayWeight = weightEntries.some(entry => entry.id === todayDateString);
+    const hasTodayBodyFat = bodyFatEntries.some(entry => entry.id === todayDateString);
+
+    return { weightEntries, latestWeight, latestBodyFat, bodyFatEntries, hasTodayWeight, hasTodayBodyFat, addWeightEntry, addBodyFatEntry, loading, error };
 };
