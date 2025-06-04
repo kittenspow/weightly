@@ -27,41 +27,43 @@ const TrackerPage = () => {
   // combine and sort entries for history table and charts
   const combinedEntries = useMemo(() => {
     const combined = {};
+    const latestWeightsByDate = {};
     weightEntries.forEach(entry => {
       const dateKey = entry.date.toISOString().split('T')[0];
-      if (!combined[dateKey]) {
-        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null, weightTimestamp: null, bodyFatTimestamp: null };
-      }
-      if (!combined[dateKey].weightTimestamp || entry.date.getTime() > combined[dateKey].weightTimestamp) {
-        combined[dateKey].weight = entry.weight;
-        combined[dateKey].weightTimestamp = entry.date.getTime();
-        if (entry.date.getTime() > combined[dateKey].date.getTime()) {
-          combined[dateKey].date = entry.date;
-        }
+      if (!latestWeightsByDate[dateKey] || entry.date.getTime() > latestWeightsByDate[dateKey].date.getTime()) {
+        latestWeightsByDate[dateKey] = entry;
       }
     });
+    const latestBodyFatByDate = {};
     bodyFatEntries.forEach(entry => {
       const dateKey = entry.date.toISOString().split('T')[0];
-      if (!combined[dateKey]) {
-        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null, weightTimestamp: null, bodyFatTimestamp: null };
-      }
-      if (!combined[dateKey].bodyFatTimestamp || entry.date.getTime() > combined[dateKey].bodyFatTimestamp) {
-        combined[dateKey].bodyFat = entry.bodyFat;
-        combined[dateKey].bodyFatTimestamp = entry.date.getTime();
-        if (entry.date.getTime() > combined[dateKey].date.getTime()) {
-          combined[dateKey].date = entry.date;
-        }
+      if (!latestBodyFatByDate[dateKey] || entry.date.getTime() > latestBodyFatByDate[dateKey].date.getTime()) {
+        latestBodyFatByDate[dateKey] = entry;
       }
     });
 
-    const cleanedEntries = Object.values(combined).map(entry => ({
-      date: entry.date,
-      weight: entry.weight,
-      bodyFat: entry.bodyFat
-    }));
-    // Sort by date descending for history table (latest first)
-    const sortedEntries = cleanedEntries.sort((a, b) => b.date.getTime() - a.date.getTime());
+    Object.values(latestWeightsByDate).forEach(entry => {
+      const dateKey = entry.date.toISOString().split('T')[0];
+      if (!combined[dateKey]) {
+        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null };
+      }
+      combined[dateKey].weight = entry.weight;
+    });
 
+    Object.values(latestBodyFatByDate).forEach(entry => {
+      const dateKey = entry.date.toISOString().split('T')[0];
+      if (!combined[dateKey]) {
+        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null };
+      }
+      combined[dateKey].bodyFat = entry.bodyFat;
+      // Use the later timestamp if this body fat entry is newer
+      if (entry.date.getTime() > combined[dateKey].date.getTime()) {
+        combined[dateKey].date = entry.date;
+      }
+    });
+
+    // Sort by date descending for history table (latest first)
+    const sortedEntries = Object.values(combined).sort((a, b) => b.date.getTime() - a.date.getTime());
     // Filter by date if filterDate is set
     if (filterDate) {
       return sortedEntries.filter(entry => entry.date.toISOString().split('T')[0] === filterDate);
