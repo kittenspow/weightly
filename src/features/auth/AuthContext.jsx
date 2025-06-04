@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// hy karin, ini masih data dummy yeah
-// pls ak ga ngerti firebase, tolong yh hiks
 import { auth, db } from '../../firebase.js';
 // firebase function
 import {

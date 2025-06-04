@@ -58,7 +58,7 @@ export const RegisterPage = () => {
     };
 
     return (
-      <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="min-h-screen bg-gray-50 py-8 px-4 mb-10">
         <Card className="py-6 max-w-xs sm:max-w-sm md:max-w-2xl font-poppins">
           <h2 className="text-2xl font-bold mb-6 font-lexend text-blue-text text-center">Sign Up</h2>
             <form onSubmit={handleSubmit(onSubmit)}>

@@ -107,7 +107,7 @@ const AppContent = () => {
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
           {/* jika user sudah login, arahkan ke /home. Jika belum, arahkan ke / (welcome) */}
-          <Route path="*" element={user ? <Navigate to="/home" replace /> : <Navigate to="/" replace />} />
+          <Route path="*" element={user ? <Navigate to="/home" replace /> : <Navigate to="/home" replace />} />
         </Routes>
       </main>
       <Footer />
