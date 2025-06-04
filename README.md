@@ -18,7 +18,7 @@ cd weightly
 ```
 #### 2. Install depedencies:
 ```bash
-npm install firebase react-hook-form react-router-dom zod @hookform/resolvers recharts lucide-react 
+npm install firebase react-hook-form react-router-dom zod @hookform/resolvers recharts lucide-react framer-motion
 ```
 #### 3. Start the React development server::
 ```bash
