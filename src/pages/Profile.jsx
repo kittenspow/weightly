@@ -181,7 +181,8 @@ const ProfilePage = () => {
 
       {/* Health summary card */}
       <HealthSummary/> 
-
+      
+      {/* User information  */}
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
           <div className="flex justify-between items-center mb-4">

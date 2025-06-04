@@ -2,27 +2,11 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Calculator, TrendingUp, User, Heart } from 'lucide-react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import NavButton from './NavButton';
 
 
 const Navbar = () => {
-
-    const location = useLocation();
-
-    const NavButton = ({ to, children, icon: Icon }) => (
-        <Link 
-            to={to}
-            className={`flex items-center gap-2 px-4 py-2 w-full rounded-md font-poppins font-medium transition-colors ${
-                location.pathname === to
-                  ? 'bg-white text-primary-blue'
-                  : 'text-white hover:text-primary-blue hover:bg-white/85'
-            }`} 
-        > 
-          <Icon className="w-5 h-5" />
-          {children}
-        </Link>
-    );
-
 
     return (
         <Disclosure as="nav" className="bg-primary-blue">

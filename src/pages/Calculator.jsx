@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Card from '../components/Card'; // Card masih digunakan untuk bagian "Information Section"
+import Card from '../components/Card'; 
 import BMICalculator from '../features/calculator/BMICalculator';
 import BodyFatCalculator from '../features/calculator/BodyFatCalculator';
 import TDEECalculator from '../features/calculator/TDEECalculator';
@@ -48,7 +48,7 @@ const CalculatorPage = () => {
       {/* render the active calculator component */}
       {renderActiveCalculator()}
 
-      {/* Information Section (Still common for all calculators) */}
+      {/* Information Section */}
       <Card className="mt-8">
         <h3 className="text-xl font-semibold mb-4">How These Calculations Work</h3>
         <div className="grid md:grid-cols-3 gap-6 text-sm">

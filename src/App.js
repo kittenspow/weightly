@@ -1,7 +1,5 @@
 import React from 'react';
-// Import komponen React Router yang diperlukan
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
-
 import { AuthProvider, useAuth } from './features/auth/AuthContext';
 import { LoginPage } from './pages/authPages/LoginPage';
 import { RegisterPage } from './pages/authPages/RegisterPage';
@@ -10,11 +8,10 @@ import TrackerPage from './pages/Tracker';
 import CalculatorPage from './pages/Calculator';
 import ProfilePage from './pages/Profile';
 import WelcomePage from './pages/authPages/WelcomePage';
-
+import AuthNavbar from './components/AuthNavbar';
 import Navbar from './components/Navbar';
 
-
-// Komponen Pembungkus untuk Rute yang Membutuhkan Autentikasi
+// wrapper
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
@@ -30,14 +27,16 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
+// jika user belum login
   if (!user) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+    return <Navigate to="/" replace state={{ from: location }} />;
   }
 
   return children;
 };
 
-// Komponen Pembungkus untuk Rute Autentikasi (Welcome/Login/Register)
+// wrapper component untuk route autentikasi (Welcome/Login/Register)
+// jika user sudah login, arahkan mereka ke /home (atau halaman yang ingin mereka tuju)
 const AuthRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
@@ -47,18 +46,19 @@ const AuthRoute = ({ children }) => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4 font-poppins"></div>
-          <p className="text-gray-600">Loading Weightly...</p>
+          <p className="text-gray-600 font-poppins">Loading Weightly...</p>
         </div>
       </div>
     );
   }
 
+  // Jika user sudah login, arahkan ke /home atau dari mana mereka berasal
   if (user) {
     const from = location.state?.from?.pathname || '/home';
     return <Navigate to={from} replace />;
   }
 
-  // Konten akan ditengahkan oleh parent <main> di App.jsx
+  // Jika user belum login, tampilkan halaman autentikasi
   return (
     <div className="w-full h-full flex items-center justify-center">
       {children}
@@ -68,7 +68,7 @@ const AuthRoute = ({ children }) => {
 
 
 const AppContent = () => {
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuth(); // Tetap ambil user dan loading untuk kondisi loading screen
 
   if (loading) {
     return (
@@ -83,22 +83,28 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
-      {/* Navbar hanya dirender jika user sudah login */}
-      {user && <Navbar />} 
+      {/* Render Navbar secara kondisional berdasarkan status user */}
+      {user ? <Navbar /> : <AuthNavbar />}
 
-      {/* Main Content Area: */}
+      {/* Main Content Area */}
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <Routes>
-          <Route path="/" element={<AuthRoute><WelcomePage /></AuthRoute>} />
+          {/* Public Routes */}
+          {/* Welcome, Login, Register: hanya bisa diakses jika user belum login */}
+          <Route path="/signin" element={<AuthRoute><WelcomePage /></AuthRoute>} />
           <Route path="/login" element={<AuthRoute><LoginPage /></AuthRoute>} />
           <Route path="/signup" element={<AuthRoute><RegisterPage /></AuthRoute>} />
 
-          <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          {/* Home Page: data diakses user yang belum login */}
+          <Route path="/home" element={<HomePage />} />
+
+          {/* protected Routes: hanya bisa diakses jika user sudah login */}
           <Route path="/tracker" element={<ProtectedRoute><TrackerPage /></ProtectedRoute>} />
           <Route path="/calculator" element={<ProtectedRoute><CalculatorPage /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
-          <Route path="*" element={!user ? <Navigate to="/" replace /> : <Navigate to="/home" replace />} />
+          {/* jika user sudah login, arahkan ke /home. Jika belum, arahkan ke / (welcome) */}
+          <Route path="*" element={user ? <Navigate to="/home" replace /> : <Navigate to="/" replace />} />
         </Routes>
       </main>
     </div>
