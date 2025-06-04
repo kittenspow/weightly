@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom'
 import { Calculator, Target, ChevronRight, TrendingUp } from 'lucide-react';
 import Card from '../components/Card';
@@ -6,6 +6,8 @@ import weightlyVector from '../assets/image/weightly_vector.png';
 import SquishyCard from '../components/SquishyCard';
 
 const HomePage = () => {
+  const featuresSectionRef = useRef(null);
+
 // mock articles (nanti article nya dibikin beneran)
   const articles = [
     {
@@ -30,6 +32,15 @@ const HomePage = () => {
     }
   ];
 
+  const scrollToSection = (ref) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({
+        behavior: 'smooth', // Untuk animasi scroll yang mulus
+        block: 'start',      // Menyelaraskan bagian atas elemen dengan bagian atas viewport
+      });
+    }
+  };
+
   return (
     <div>
       <div className="space-y-12">
@@ -37,19 +48,19 @@ const HomePage = () => {
         <section className="flex flex-col md:flex-row items-center justify-between gap-12 py-14 px-6 max-w-6xl mx-auto text-primary-blue">
           <div className='flex-shrink-0 mb-8 md:mb-0 md:w-1/2 flex justify-center'>
             <img src={weightlyVector} alt='weightly'
-              className='w-48 h-auto object-cover md:w-72 -rotate-[20deg] hover:rotate-[20deg] transition ease-in-out duration-500'/>
+              className='w-48 h-auto object-cover md:w-72 -rotate-[20deg] hover:rotate-[20deg] transition ease-in-out duration-1000'/>
           </div>
           <div className="text-center md:text-left md:w-1/2">
             <h1 className="text-5xl text-blue-text font-bold font-lexend mb-6">Weightly</h1>
             <p className="text-s text-justify text-blue-text mb-8 font-medium font-poppins md:mr-5">Your journey to a healthier you starts with better tracking. Our platform helps you monitor your weight, calculate your BMI, and understand your body fat percentage, so you can set real goals and reach them confidently!</p>
-            <button className="font-poppins font-normal bg-primary-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+            <button onClick={() => scrollToSection(featuresSectionRef)} className="font-poppins font-normal bg-primary-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
               Learn more
             </button>
           </div>
         </section>
 
         {/* Features Section */}
-        <section className="py-20">
+        <section id="features-section" ref={featuresSectionRef} className="py-20">
           <div className="max-w-5xl mx-auto mb-12">
             <h2 className="text-3xl text-blue-text font-lexend font-bold text-center mb-12">Made to Help Your Health Journey</h2>
             <div className="grid md:grid-cols-3 gap-8 font-poppins">
