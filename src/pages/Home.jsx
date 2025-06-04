@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { Calculator, Target, ChevronRight, TrendingUp } from 'lucide-react';
 import Card from '../components/Card';
 import weightlyVector from '../assets/image/weightly_vector.png';
@@ -72,21 +73,25 @@ const HomePage = () => {
       {/* Articles Section */}
       <section className="py-16 bg-gray-50 rounded-lg">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl text-blue-text font-lexend font-bold text-center mb-12">Articles</h2>
-          <div className="grid md:grid-cols-2 gap-8 font-poppins">
+          <h2 className="text-3xl font-bold text-center mb-12">Health & Fitness Articles</h2>
+          <div className="grid md:grid-cols-2 gap-8">
             {articles.map((article, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="flex justify-between items-start mb-3">
-                  <span className="text-sm font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                    {article.category}
-                  </span>
-                </div>
-                <h3 className="text-xl font-semibold mb-3">{article.title}</h3>
-                <p className="text-gray-600 mb-4">{article.excerpt}</p>
-                <div className="flex items-center text-blue-600 font-medium">
-                  Read More <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </Card>
+              <Link to={`/articles/${article.id}`} key={article.id || index}>
+                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-start mb-3">
+                      <span className="text-sm font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                        {article.category}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">{article.title}</h3>
+                    <p className="text-gray-600 mb-4">{article.excerpt}</p>
+                  </div>
+                  <div className="flex items-center text-blue-600 font-medium mt-auto"> 
+                    Read More <ChevronRight className="w-4 h-4 ml-1" />
+                  </div>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
