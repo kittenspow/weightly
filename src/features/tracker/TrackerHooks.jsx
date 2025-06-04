@@ -16,9 +16,6 @@ import {
 
 // To manage weight and body fat tracking
 
-// hy karin ini msh pke dummy data hwhww ak gtw klo integrate ke firebase gmn jd tlong yh 
-// atw klo mw ngerjain bareng bwleh
-
 export const useTrackerData = () => {
     const { user, userId, loading: authLoading, updateProfileData } = useAuth();
     const [weightEntries, setWeightEntries] = useState([]);
