@@ -18,7 +18,10 @@ const bodyFatManualEntrySchema = z.object({
 const bodyFatNavyEntrySchema = z.object({
   waist: z.number().min(1, "Waist is required"),
   neck: z.number().min(1, "Neck is required"),
-  hip: z.number().optional(), // optional for males
+  hip: z.preprocess(
+    (val) => (val === '' ? undefined : Number(val)),
+    z.number().optional()
+  ), // optional for males
 }).superRefine((data, ctx) => {
   if (data.gender === 'female' && !data.hip) {
     ctx.addIssue({
@@ -72,10 +75,10 @@ const BodyFatEntryForm = ({ onAddBodyFatEntry }) => {
         console.error("Cannot add body fat entry: US Navy calculation incomplete or invalid inputs.");
         return;
       }
-      bodyFatValue = calculatedNavyBodyFat;
+      bodyFatValue = Math.round(calculatedNavyBodyFat * 10) / 10; // 25.784... → 25.8
       resetBfNavyForm();
     } else {
-      bodyFatValue = data.bodyFat;
+      bodyFatValue = Math.round(data.bodyFat * 10) / 10;
       resetBfManualForm();
     }
     await onAddBodyFatEntry(bodyFatValue);
@@ -105,6 +108,7 @@ const BodyFatEntryForm = ({ onAddBodyFatEntry }) => {
           <Input
             label="Body Fat Percentage (%)"
             type="number"
+            step="0.1"
             placeholder="Enter your body fat percentage"
             register={bfManualRegister}
             name="bodyFat"
@@ -120,6 +124,7 @@ const BodyFatEntryForm = ({ onAddBodyFatEntry }) => {
             <Input
               label="Waist Circumference (cm)"
               type="number"
+              step="0.1"
               placeholder="Measure at narrowest point"
               register={bfNavyRegister}
               name="waist"
@@ -128,6 +133,7 @@ const BodyFatEntryForm = ({ onAddBodyFatEntry }) => {
             <Input
               label="Neck Circumference (cm)"
               type="number"
+              step="0.1"
               placeholder="Measure below Adam's apple"
               register={bfNavyRegister}
               name="neck"
@@ -137,6 +143,7 @@ const BodyFatEntryForm = ({ onAddBodyFatEntry }) => {
               <Input
                 label="Hip Circumference (cm)"
                 type="number"
+                step="0.1"
                 placeholder="Measure at widest point"
                 register={bfNavyRegister}
                 name="hip"
