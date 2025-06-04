@@ -94,7 +94,7 @@ const TrackerPage = () => {
   }
 
   return (
-    <div className="space-y-6 font-poppins">
+    <div className="space-y-6 font-poppins px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center grid grid-row-2 sm:grid-cols-2">
         <h1 className="text-3xl font-bold font-lexend text-blue-text">Tracker</h1>
         <div className="flex gap-2 justify-end mt-3 sm:mt-0">

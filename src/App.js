@@ -10,6 +10,7 @@ import ProfilePage from './pages/Profile';
 import WelcomePage from './pages/authPages/WelcomePage';
 import AuthNavbar from './components/AuthNavbar';
 import Navbar from './components/Navbar';
+import ArticleDetail from './features/article/ArticleDetail';
 
 // wrapper
 const ProtectedRoute = ({ children }) => {
@@ -87,7 +88,7 @@ const AppContent = () => {
       {user ? <Navbar /> : <AuthNavbar />}
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto py-7">
         <Routes>
           {/* Public Routes */}
           {/* Welcome, Login, Register: hanya bisa diakses jika user belum login */}
@@ -95,8 +96,10 @@ const AppContent = () => {
           <Route path="/login" element={<AuthRoute><LoginPage /></AuthRoute>} />
           <Route path="/signup" element={<AuthRoute><RegisterPage /></AuthRoute>} />
 
-          {/* Home Page: data diakses user yang belum login */}
+          {/* Home Page: data diakses user yang belum login (public)*/}
           <Route path="/home" element={<HomePage />} />
+          {/* Article Detail Page (public) */}
+          <Route path="/articles/:articleId" element={<ArticleDetail />} />
 
           {/* protected Routes: hanya bisa diakses jika user sudah login */}
           <Route path="/tracker" element={<ProtectedRoute><TrackerPage /></ProtectedRoute>} />
