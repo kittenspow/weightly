@@ -155,7 +155,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="space-y-6 font-poppins px-4 sm:px-6 lg:px-8">
+    <div className="space-y-6 font-poppins px-4 sm:px-6 lg:px-8 pb-16">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold font-lexend text-blue-text">Profile</h1>
         <div className='flex gap-4 items-center'>

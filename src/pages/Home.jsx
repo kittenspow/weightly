@@ -8,30 +8,6 @@ import SquishyCard from '../components/SquishyCard';
 const HomePage = () => {
   const featuresSectionRef = useRef(null);
 
-// mock articles (nanti article nya dibikin beneran)
-  const articles = [
-    {
-      title: "Understanding BMI and Its Limitations",
-      excerpt: "Learn why BMI is a useful starting point but not the complete picture of your health.",
-      category: "Health Basics"
-    },
-    {
-      title: "The Science Behind Body Fat Percentage",
-      excerpt: "Discover why body fat percentage is often more important than weight alone.",
-      category: "Fitness"
-    },
-    {
-      title: "Creating a Sustainable Weight Loss Plan",
-      excerpt: "Tips for setting realistic goals and maintaining long-term success.",
-      category: "Weight Loss"
-    },
-    {
-      title: "Nutrition Basics for Body Composition",
-      excerpt: "How to fuel your body for optimal performance and health.",
-      category: "Nutrition"
-    }
-  ];
-
   const scrollToSection = (ref) => {
     if (ref.current) {
       ref.current.scrollIntoView({
@@ -62,7 +38,7 @@ const HomePage = () => {
         {/* Features Section */}
         <section id="features-section" ref={featuresSectionRef} className="py-20">
           <div className="max-w-5xl mx-auto mb-12">
-            <h2 className="text-3xl text-blue-text font-lexend font-bold text-center mb-12">Made to Help Your Health Journey</h2>
+            <h2 className="px-5 md:px-0 text-3xl text-blue-text font-lexend font-bold text-center mb-12">Made to Help Your Health Journey</h2>
             <div className="grid md:grid-cols-3 gap-8 font-poppins">
 
               <SquishyCard title="Weight & Body Fat Tracking" icon={TrendingUp}>
@@ -82,31 +58,97 @@ const HomePage = () => {
         </section>
       </div>
 
-      {/* Articles Section */}
+      {/* Articles Section (Dummy) */}
       <div className='bg-primary-blue rounded-t-[2.5rem] mt-10'>
         <section className="py-16">
           <div className="max-w-6xl mx-auto px-6">
             <h2 className="text-3xl font-bold text-center text-white mb-12">Articles</h2>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {articles.map((article, index) => (
-                <Link to={`/articles/${article.id}`} key={article.id || index}>
-                  <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between items-start mb-3">
-                        <span className="text-sm font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                          {article.category}
-                        </span>
-                      </div>
-                      <h3 className="text-xl font-semibold mb-3">{article.title}</h3>
-                      <p className="text-gray-600 mb-4">{article.excerpt}</p>
+              <Link to='/article001'>
+                <Card className="hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer h-full flex flex-col justify-between">
+                <div>
+                    <div className="flex justify-between items-start mb-3">
+                      <span className="text-m font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-md">
+                        Health Basics
+                      </span>
                     </div>
-                    <div className="flex items-center text-blue-600 font-medium mt-auto"> 
-                      Read More <ChevronRight className="w-4 h-4 ml-1" />
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3 leading-tight">
+                      Understanding BMI and Its Limitations
+                    </h3>
+                    <p className="text-gray-600 text-base mb-4 line-clamp-3"> {/* line-clamp for consistent excerpt height */}
+                      Learn why BMI is a useful starting point but not the complete picture of your health.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-blue-600 font-medium mt-auto">
+                    Read More <ChevronRight className="w-4 h-4 ml-1" />
+                  </div>
+                </Card>
+              </Link>
+
+              <Link to='/article001'>
+                <Card className="hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer h-full flex flex-col justify-between">
+                <div>
+                    <div className="flex justify-between items-start mb-3">
+                      <span className="text-m font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-md">
+                        Health Basics
+                      </span>
                     </div>
-                  </Card>
-                </Link>
-              ))}
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3 leading-tight">
+                      Shedding Pounds Sustainably: Practical Tips for Effective Weight Loss
+                    </h3>
+                    <p className="text-gray-600 text-base mb-4 line-clamp-3"> {/* line-clamp for consistent excerpt height */}
+                    If you're looking to embark on a successful weight loss journey, here are practical tips to guide you towards your goals in a healthy way.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-blue-600 font-medium mt-auto">
+                    Read More <ChevronRight className="w-4 h-4 ml-1" />
+                  </div>
+                </Card>
+              </Link>
+
+              <Link to='/article001'>
+                <Card className="hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer h-full flex flex-col justify-between">
+                <div>
+                    <div className="flex justify-between items-start mb-3">
+                      <span className="text-m font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-md">
+                        Fitness
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3 leading-tight">
+                      Sculpt Your Physique: A Comprehensive Guide to Lowering Body Fat Percentage
+                    </h3>
+                    <p className="text-gray-600 text-base mb-4 line-clamp-3"> {/* line-clamp for consistent excerpt height */}
+                      While weight loss is a common goal, focusing specifically on body fat can lead to a more defined and resilient body.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-blue-600 font-medium mt-auto">
+                    Read More <ChevronRight className="w-4 h-4 ml-1" />
+                  </div>
+                </Card>
+              </Link>
+
+              <Link to='/article001'>
+                <Card className="hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer h-full flex flex-col justify-between">
+                <div>
+                    <div className="flex justify-between items-start mb-3">
+                      <span className="text-m font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-md">
+                        Fitness
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3 leading-tight">
+                      Maximize Your Sweat: Essential Tips for Effective Workouts
+                    </h3>
+                    <p className="text-gray-600 text-base mb-4 line-clamp-3"> {/* line-clamp for consistent excerpt height */}
+                    This article provides essential tips to help you maximize your sweat sessions, ensuring they are effective, safe, and enjoyable.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-blue-600 font-medium mt-auto">
+                    Read More <ChevronRight className="w-4 h-4 ml-1" />
+                  </div>
+                </Card>
+              </Link>
+
             </div>
           </div>
         </section>

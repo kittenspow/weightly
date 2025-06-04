@@ -10,7 +10,8 @@ import ProfilePage from './pages/Profile';
 import WelcomePage from './pages/authPages/WelcomePage';
 import AuthNavbar from './components/AuthNavbar';
 import Navbar from './components/Navbar';
-import ArticleDetail from './features/article/ArticleDetail';
+import Footer from './components/Footer';
+import Article1 from './features/article/dummy/article_1';
 
 // wrapper
 const ProtectedRoute = ({ children }) => {
@@ -88,7 +89,7 @@ const AppContent = () => {
       {user ? <Navbar /> : <AuthNavbar />}
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto py-7">
+      <main className="max-w-7xl mx-auto pt-7">
         <Routes>
           {/* Public Routes */}
           {/* Welcome, Login, Register: hanya bisa diakses jika user belum login */}
@@ -98,8 +99,7 @@ const AppContent = () => {
 
           {/* Home Page: data diakses user yang belum login (public)*/}
           <Route path="/home" element={<HomePage />} />
-          {/* Article Detail Page (public) */}
-          <Route path="/articles/:articleId" element={<ArticleDetail />} />
+          <Route path="/article001" element={<Article1 />} />
 
           {/* protected Routes: hanya bisa diakses jika user sudah login */}
           <Route path="/tracker" element={<ProtectedRoute><TrackerPage /></ProtectedRoute>} />
@@ -110,6 +110,7 @@ const AppContent = () => {
           <Route path="*" element={user ? <Navigate to="/home" replace /> : <Navigate to="/" replace />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   );
 };

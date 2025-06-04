@@ -51,32 +51,32 @@ const CalculatorPage = () => {
 
       {/* Information Section */}
       <div className="bg-primary-blue rounded-t-[2.5rem]">
-        <div className='mt-10 py-10 px-4 sm:px-6 lg:px-8'>
-          <h3 className="text-3xl text-white text-center font-bold mb-20">How These Calculations Work</h3>
+        <div className='mt-10 py-10 px-4 sm:px-6 lg:px-12'>
+          <h3 className="text-2xl text-white text-center font-bold mt-5 mb-16">How These Calculations Work</h3>
           <div className="grid md:grid-cols-3 gap-10 text-sm">
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-2">BMI Formula</h4>
-              <p className="text-s text-gray-200">
+            <Card>
+              <h4 className="text-lg font-semibold mb-2">BMI Formula</h4>
+              <p className="text-s text-gray-600">
                 BMI = weight (kg) / height (m)²
               </p>
-            </div>
+            </Card>
 
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-2">US Navy Body Fat Formula</h4>
-              <p className="text-gray-200 mb-2"><strong>Men:</strong></p>
-              <p className="text-s text-gray-200">%BF = (495 / (1.0324 - 0.19077 × log10(waist - neck) + 0.15456 × log10(height))) - 450</p>
-              <p className="text-gray-200 mb-2 mt-2"><strong>Women:</strong></p>
-              <p className="text-s text-gray-200">%BF = (495 / (1.29579 - 0.35004 × log10(waist + hip - neck) + 0.22100 × log10(height))) - 450</p>
-            </div>
+            <Card>
+              <h4 className="text-lg font-semibold  mb-2">US Navy Body Fat Formula</h4>
+              <p className="text-gray-700 mb-2"><strong>Men:</strong></p>
+              <p className="text-s text-gray-600">%BF = (495 / (1.0324 - 0.19077 × log10(waist - neck) + 0.15456 × log10(height))) - 450</p>
+              <p className="text-gray-700 mb-2 mt-2"><strong>Women:</strong></p>
+              <p className="text-s text-gray-600">%BF = (495 / (1.29579 - 0.35004 × log10(waist + hip - neck) + 0.22100 × log10(height))) - 450</p>
+            </Card>
 
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-2">Harris-Benedict BMR</h4>
-              <p className="text-gray-200 mb-2"><strong>Men:</strong></p>
-              <p className="text-s text-gray-200">BMR = 88.362 + (13.397 × weight) + (4.799 × height) - (5.677 × age)</p>
-              <p className="text-gray-200 mb-2 mt-2"><strong>Women:</strong></p>
-              <p className="text-s text-gray-200">BMR = 447.593 + (9.247 × weight) + (3.098 × height) - (4.330 × age)</p>
-              <p className="text-gray-200 mt-2">TDEE = BMR × Activity Factor</p>
-            </div>
+            <Card>
+              <h4 className="text-lg font-semibold mb-2">Harris-Benedict BMR</h4>
+              <p className="text-gray-700 mb-2"><strong>Men:</strong></p>
+              <p className="text-s text-gray-600">BMR = 88.362 + (13.397 × weight) + (4.799 × height) - (5.677 × age)</p>
+              <p className="text-gray-700 mb-2 mt-2"><strong>Women:</strong></p>
+              <p className="text-s text-gray-600">BMR = 447.593 + (9.247 × weight) + (3.098 × height) - (4.330 × age)</p>
+              <p className="text-gray-700 mt-2">TDEE = BMR × Activity Factor</p>
+            </Card>
           </div>
         </div>
       </div>
