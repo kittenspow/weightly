@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }) => {
 
 // jika user belum login
   if (!user) {
-    return <Navigate to="/" replace state={{ from: location }} />;
+    return <Navigate to="/home" replace state={{ from: location }} />;
   }
 
   return children;

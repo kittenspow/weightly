@@ -54,28 +54,25 @@ const CalculatorPage = () => {
         <div className="grid md:grid-cols-3 gap-6 text-sm">
           <div>
             <h4 className="font-semibold mb-2">BMI Formula</h4>
-            <p className="text-gray-600">
+            <p className="text-s text-gray-600">
               BMI = weight (kg) / height (m)²
-            </p>
-            <p className="mt-2 text-gray-600">
-              Simple but doesn't distinguish between muscle and fat mass.
             </p>
           </div>
 
           <div>
             <h4 className="font-semibold mb-2">US Navy Body Fat Formula</h4>
             <p className="text-gray-600 mb-2"><strong>Men:</strong></p>
-            <p className="text-xs text-gray-500">%BF = 86.010×log₁₀(waist - neck) - 70.041×log₁₀(height) + 36.76</p>
+            <p className="text-s text-gray-500">%BF = (495 / (1.0324 - 0.19077 × log10(waist - neck) + 0.15456 × log10(height))) - 450</p>
             <p className="text-gray-600 mb-2 mt-2"><strong>Women:</strong></p>
-            <p className="text-xs text-gray-500">%BF = 163.205×log₁₀(waist + hip - neck) - 97.684×log₁₀(height) - 78.387</p>
+            <p className="text-s text-gray-500">%BF = (495 / (1.29579 - 0.35004 × log10(waist + hip - neck) + 0.22100 × log10(height))) - 450</p>
           </div>
 
           <div>
             <h4 className="font-semibold mb-2">Harris-Benedict BMR</h4>
             <p className="text-gray-600 mb-2"><strong>Men:</strong></p>
-            <p className="text-xs text-gray-500">BMR = 88.362 + (13.397×weight) + (4.799×height) - (5.677×age)</p>
+            <p className="text-s text-gray-500">BMR = 88.362 + (13.397 × weight) + (4.799 × height) - (5.677 × age)</p>
             <p className="text-gray-600 mb-2 mt-2"><strong>Women:</strong></p>
-            <p className="text-xs text-gray-500">BMR = 447.593 + (9.247×weight) + (3.098×height) - (4.330×age)</p>
+            <p className="text-s text-gray-500">BMR = 447.593 + (9.247 × weight) + (3.098 × height) - (4.330 × age)</p>
             <p className="text-gray-600 mt-2">TDEE = BMR × Activity Factor</p>
           </div>
         </div>

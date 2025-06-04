@@ -6,7 +6,7 @@ import Card from '../../../components/Card';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { Plus, Activity } from 'lucide-react';
-import { calculateBodyFatNavy } from '../../../lib/utils';
+import { calculateBodyFatNavy } from '../../../lib/calculateBodyFatNavy';
 import { useAuth } from '../../auth/AuthContext'; // to get user's data (height, age, gender)
 
 // Zod schema for body fat manual entry

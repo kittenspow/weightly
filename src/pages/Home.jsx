@@ -38,7 +38,7 @@ const HomePage = () => {
         </div>
         <div className="text-center md:text-left md:w-1/2">
           <h1 className="text-5xl text-blue-text font-bold font-lexend mb-6">Weightly</h1>
-          <p className="text-s text-justify text-blue-text mb-8 font-medium font-poppins mr-5">Your journey to a healthier you starts with better tracking. Our platform helps you monitor your weight, calculate your BMI, and understand your body fat percentage, so you can set real goals and reach them confidently!</p>
+          <p className="text-s text-justify text-blue-text mb-8 font-medium font-poppins md:mr-5">Your journey to a healthier you starts with better tracking. Our platform helps you monitor your weight, calculate your BMI, and understand your body fat percentage, so you can set real goals and reach them confidently!</p>
           <button className="font-poppins font-normal bg-primary-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
             Learn more
           </button>

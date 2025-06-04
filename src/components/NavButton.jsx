@@ -1,13 +1,6 @@
-// src/components/NavButton.jsx
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-/**
- * @param {object} props
- * @param {string} props.to
- * @param {React.ReactNode} props.children 
- * @param {React.ComponentType} [props.icon]
- */
 const NavButton = ({ to, children, icon: Icon }) => {
   const location = useLocation(); 
 

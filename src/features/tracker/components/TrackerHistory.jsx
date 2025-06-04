@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from '../../../components/Card';
 import Button from '../../../components/Button';
-import { calculateBMI } from '../../../lib/utils';
+import { calculateBMI } from '../../../lib/calculateBMI';
 import { useAuth } from '../../auth/AuthContext'; // to get user's data (height)
 
 /**

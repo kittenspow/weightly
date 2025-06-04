@@ -41,7 +41,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-20 px-4">
+    <div className="bg-gray-50 py-10 px-4">
       <Card className='py-6 max-w-xs sm:max-w-sm md:max-w-2xl font-poppins'>
         <h2 className='text-2xl font-bold mb-6 font-lexend text-blue-text text-center'>Log in</h2>
         <form onSubmit={handleSubmit(onSubmit)}>

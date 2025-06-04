@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from '../../../components/Card';
 import { Target, Activity, TrendingUp } from 'lucide-react';
-import { calculateBMI } from '../../../lib/utils';
+import { calculateBMI } from '../../../lib/calculateBMI';
 
 /**
  * TrackerOverview component

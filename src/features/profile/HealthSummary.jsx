@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from '../../features/auth/AuthContext';
-import { calculateBMI } from "../../lib/utils";
+import { calculateBMI } from "../../lib/calculateBMI";
 import { Heart } from 'lucide-react';
 import Card from '../../components/Card';
 

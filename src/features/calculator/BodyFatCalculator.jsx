@@ -5,22 +5,56 @@ import { z } from 'zod';
 import Card from '../../components/Card';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { calculateBodyFatNavy } from '../../lib/utils';
+import { calculateBodyFatNavy } from '../../lib/calculateBodyFatNavy';
 
-// Zod schema for Body Fat form validation
+// zod schema for Body Fat form validation
 const bodyFatSchema = z.object({
   gender: z.enum(['male', 'female']),
-  height: z.number().min(50, "Height is required").max(250, "Height seems too high"),
-  waist: z.number().min(1, "Waist is required"),
-  neck: z.number().min(1, "Neck is required"),
-  hip: z.number().optional(), // optional for males
+  // preprocess untuk convert nilai input menjadi angka
+  height: z.preprocess(
+    (val) => Number(val), // convert string kosong menjadi 0 atau NaN
+    z.number().min(1, "Height is required and must be a positive number (at least 1 cm)").max(250, "Height seems too high")
+  ),
+  waist: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1, "Waist is required and must be a positive number (at least 1 cm)")
+  ),
+  neck: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1, "Neck is required and must be a positive number (at least 1 cm)")
+  ),
+  // untuk hip opsional, convert string kosong menjadi undefined
+  hip: z.preprocess(
+    (val) => (val === '' ? undefined : Number(val)),
+    z.number().optional()
+  ),
 }).superRefine((data, ctx) => {
-  if (data.gender === 'female' && !data.hip) {
+  // validasi untuk hip for female
+  if (data.gender === 'female' && (data.hip === undefined || data.hip === null)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: "Hip circumference is required for females",
       path: ['hip'],
     });
+  }
+
+  // validation untuk memastikan argumen logaritma positif
+  if (data.gender === 'male') {
+    if (data.waist - data.neck <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Waist circumference must be greater than neck circumference for calculation.",
+        path: ['waist'], 
+      });
+    }
+  } else { // female
+    if (data.waist + (data.hip || 0) - data.neck <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Combined waist and hip circumference must be greater than neck circumference for calculation.",
+        path: ['waist'], 
+      });
+    }
   }
 });
 
@@ -131,8 +165,7 @@ const BodyFatCalculator = () => {
             </div>
           </div>
           <p className="text-gray-600 mt-3">
-            The US Navy method is more accurate than BMI for assessing body composition,
-            but DEXA scans and hydrostatic weighing are more precise.
+          These calculations offer a general estimate, relying on broad assumptions. For precise body fat measurements, specialized tools like bioelectric impedance analysis or hydrostatic density testing are recommended.
           </p>
         </div>
       </Card>

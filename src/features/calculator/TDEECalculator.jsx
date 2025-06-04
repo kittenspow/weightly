@@ -1,4 +1,3 @@
-// src/features/calculator/TDEECalculator.jsx
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,7 +5,7 @@ import { z } from 'zod';
 import Card from '../../components/Card';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { calculateTDEE } from '../../lib/utils'; // Import fungsi kalkulasi TDEE
+import { calculateTDEE } from '../../lib/calculateTDEE'; 
 
 // Zod schema for TDEE form validation
 const tdeeSchema = z.object({

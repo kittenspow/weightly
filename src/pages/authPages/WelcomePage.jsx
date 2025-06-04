@@ -4,10 +4,10 @@ import Card from '../../components/Card';
 import Button from '../../components/Button'; 
 
 const WelcomePage = () => {
-  const navigate = useNavigate(); // Hook untuk navigasi programatik
+  const navigate = useNavigate(); 
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="max-h-screen mt-10 bg-gray-50 flex items-center justify-center p-4">
       <Card className="py-12 max-w-md mx-auto text-center">
         <h1 className="text-3xl font-bold font-lexend text-blue-text mb-4">Welcome to Weightly</h1>
         <p className="text-gray-600 font-poppins mb-6">

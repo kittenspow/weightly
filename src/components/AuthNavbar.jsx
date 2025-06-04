@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Heart } from 'lucide-react';
+import { Heart, User } from 'lucide-react';
 import NavButton from './NavButton';
 
 const AuthNavbar = () => {
@@ -29,7 +28,7 @@ const AuthNavbar = () => {
           <div className="flex flex-1 items-center justify-end">
             <div className="hidden sm:ml-6 md:block font-poppins justify-end">
               <div className="flex space-x-4">
-                <NavButton to="/" icon={Heart}>Home</NavButton>
+                <NavButton to="/home" icon={Heart}>Home</NavButton>
                 <NavButton to="/signin">Sign in</NavButton>
               </div>
             </div>
@@ -37,10 +36,10 @@ const AuthNavbar = () => {
         </div>
       </div>
 
-      {/* Hamburger menu for mobile */}
+      {/* hamburger menu */}
       <DisclosurePanel className="md:hidden">
         <div className="space-y-1 px-2 pt-2 pb-3">
-          <NavButton to="/" icon={Heart}>Home</NavButton>
+          <NavButton to="/home" icon={Heart}>Home</NavButton>
           <NavButton to="/signin">Sign in</NavButton>
         </div>
       </DisclosurePanel>

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Calculator, TrendingUp, User, Heart } from 'lucide-react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
