@@ -17,9 +17,8 @@ const TrackerPage = () => {
   const TabButton = ({ id, children, active }) => (
     <button
       onClick={() => setActiveTab(id)}
-      className={`px-4 py-2 rounded-md font-medium transition-colors ${
-        active ? 'bg-primary-blue text-white' : 'text-gray-600 hover:text-primary-blue'
-      }`}
+      className={`px-4 py-2 rounded-md font-medium transition-colors ${active ? 'bg-primary-blue text-white' : 'text-gray-600 hover:text-primary-blue'
+        }`}
     >
       {children}
     </button>
@@ -31,20 +30,37 @@ const TrackerPage = () => {
     weightEntries.forEach(entry => {
       const dateKey = entry.date.toISOString().split('T')[0];
       if (!combined[dateKey]) {
-        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null };
+        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null, weightTimestamp: null, bodyFatTimestamp: null };
       }
-      combined[dateKey].weight = entry.weight;
+      if (!combined[dateKey].weightTimestamp || entry.date.getTime() > combined[dateKey].weightTimestamp) {
+        combined[dateKey].weight = entry.weight;
+        combined[dateKey].weightTimestamp = entry.date.getTime();
+        if (entry.date.getTime() > combined[dateKey].date.getTime()) {
+          combined[dateKey].date = entry.date;
+        }
+      }
     });
     bodyFatEntries.forEach(entry => {
       const dateKey = entry.date.toISOString().split('T')[0];
       if (!combined[dateKey]) {
-        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null };
+        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null, weightTimestamp: null, bodyFatTimestamp: null };
       }
-      combined[dateKey].bodyFat = entry.bodyFat;
+      if (!combined[dateKey].bodyFatTimestamp || entry.date.getTime() > combined[dateKey].bodyFatTimestamp) {
+        combined[dateKey].bodyFat = entry.bodyFat;
+        combined[dateKey].bodyFatTimestamp = entry.date.getTime();
+        if (entry.date.getTime() > combined[dateKey].date.getTime()) {
+          combined[dateKey].date = entry.date;
+        }
+      }
     });
 
+    const cleanedEntries = Object.values(combined).map(entry => ({
+      date: entry.date,
+      weight: entry.weight,
+      bodyFat: entry.bodyFat
+    }));
     // Sort by date descending for history table (latest first)
-    const sortedEntries = Object.values(combined).sort((a, b) => b.date.getTime() - a.date.getTime());
+    const sortedEntries = cleanedEntries.sort((a, b) => b.date.getTime() - a.date.getTime());
 
     // Filter by date if filterDate is set
     if (filterDate) {
@@ -87,31 +103,31 @@ const TrackerPage = () => {
 
       {activeTab === 'overview' && (
         <div>
-            <TrackerOverview
-                user={user}
-                weightEntries={weightEntries}
-                bodyFatEntries={bodyFatEntries}
-            />
-            <div className='mt-5'>
-                <TrackerCharts chartData={chartData} />
-            </div>
+          <TrackerOverview
+            user={user}
+            weightEntries={weightEntries}
+            bodyFatEntries={bodyFatEntries}
+          />
+          <div className='mt-5'>
+            <TrackerCharts chartData={chartData} />
+          </div>
         </div>
-        
+
       )}
 
       {activeTab === 'entry' && (
         <div>
-            <div className='grid md:grid-cols-2 gap-6'>
-                <WeightEntryForm onAddWeightEntry={addWeightEntry} />
-                <BodyFatEntryForm onAddBodyFatEntry={addBodyFatEntry} />
-            </div>
-            <div className='mt-5'>
-                <TrackerHistory
-                    combinedEntries={combinedEntries}
-                    filterDate={filterDate}
-                    setFilterDate={setFilterDate}
-                />
-            </div>
+          <div className='grid md:grid-cols-2 gap-6'>
+            <WeightEntryForm onAddWeightEntry={addWeightEntry} />
+            <BodyFatEntryForm onAddBodyFatEntry={addBodyFatEntry} />
+          </div>
+          <div className='mt-5'>
+            <TrackerHistory
+              combinedEntries={combinedEntries}
+              filterDate={filterDate}
+              setFilterDate={setFilterDate}
+            />
+          </div>
         </div>
       )}
     </div>
