@@ -38,6 +38,7 @@ const WeightEntryForm = ({ onAddWeightEntry }) => {
         <Input
           label="Weight (kg)"
           type="number"
+          step="0.1"
           placeholder="Enter your current weight"
           register={register}
           name="weight"
