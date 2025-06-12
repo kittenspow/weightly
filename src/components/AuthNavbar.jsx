@@ -37,7 +37,7 @@ const AuthNavbar = () => {
       </div>
 
       {/* hamburger menu */}
-      <DisclosurePanel className="md:hidden">
+      <DisclosurePanel className="md:hidden transition ease-in-out duration-300">
         <div className="space-y-1 px-2 pt-2 pb-3">
           <NavButton to="/home" icon={Heart}>Home</NavButton>
           <NavButton to="/signin">Sign in</NavButton>
