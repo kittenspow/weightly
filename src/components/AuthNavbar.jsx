@@ -12,7 +12,7 @@ const AuthNavbar = () => {
         <div className="relative flex h-16 items-center justify-between">
 
           <div className="absolute inset-y-0 right-0 flex items-center md:hidden">
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-1 text-white hover:bg-white hover:text-primary-blue focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
+            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-1 text-white hover:bg-white hover:text-primary-blue focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset transition ease-in-out duration-500">
               <span className="absolute -inset-0.5" />
               <Bars3Icon aria-hidden="true" className="block size-8 group-data-open:hidden" />
               <XMarkIcon aria-hidden="true" className="hidden size-8 group-data-open:block" />
@@ -37,7 +37,7 @@ const AuthNavbar = () => {
       </div>
 
       {/* hamburger menu */}
-      <DisclosurePanel className="md:hidden transition ease-in-out duration-300">
+      <DisclosurePanel className="md:hidden">
         <div className="space-y-1 px-2 pt-2 pb-3">
           <NavButton to="/home" icon={Heart}>Home</NavButton>
           <NavButton to="/signin">Sign in</NavButton>

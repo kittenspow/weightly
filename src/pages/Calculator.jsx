@@ -35,8 +35,8 @@ const CalculatorPage = () => {
 
   return (
     <div className="space-y-6 font-poppins">
-      <div className='px-4 sm:px-6 lg:px-8 pb-10'>
-        <div className='flex justify-between items-center grid grid-row-2 sm:grid-cols-2 mb-3'>
+      <div className='px-4 sm:px-6 lg:px-8 pb-12'>
+        <div className='flex justify-between items-center grid grid-row-2 sm:grid-cols-2 mb-6'>
           <h1 className="text-3xl font-bold font-lexend text-blue-text">Calculators</h1>
           <div className="flex gap-2 justify-end mt-3 sm:mt-0">
             <TabButton id="bmi" active={activeCalculator === 'bmi'}>BMI Calculator</TabButton>
