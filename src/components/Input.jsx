@@ -1,11 +1,12 @@
 import React from 'react';
 
-const Input = ({ label, type = "text", value, onChange, placeholder = "", className = "", disabled = false, register, name, error }) => {
+const Input = ({ label, type, step, value, onChange, placeholder = "", className = "", disabled = false, register, name, error }) => {
     return (
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
         <input
           type={type}
+          step={step}
           // Use value and onChange for controlled components, or register for React Hook Form
           {...(register ? register(name, { valueAsNumber: type === 'number' }) : { value, onChange })}
           placeholder={placeholder}

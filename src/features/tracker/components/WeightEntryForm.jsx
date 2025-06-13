@@ -5,18 +5,13 @@ import { z } from 'zod';
 import Card from '../../../components/Card';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
-import { Plus, Scale } from 'lucide-react';
+import { Scale } from 'lucide-react';
 
 // Zod schema for weight entry
 const weightEntrySchema = z.object({
   weight: z.number().min(1, 'Weight is required').max(300, "Weight seems too high."),
 });
 
-/**
- * WeightEntryForm component handles the form for adding new weight entries.
- * @param {object} props - Component props.
- * @param {function} props.onAddWeightEntry - Callback function to add a new weight entry.
- */
 const WeightEntryForm = ({ onAddWeightEntry }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(weightEntrySchema),
@@ -38,7 +33,7 @@ const WeightEntryForm = ({ onAddWeightEntry }) => {
         <Input
           label="Weight (kg)"
           type="number"
-          step="0.1"
+          step="0.01"
           placeholder="Enter your current weight"
           register={register}
           name="weight"

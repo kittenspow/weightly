@@ -108,7 +108,7 @@ const BodyFatEntryForm = ({ onAddBodyFatEntry }) => {
           <Input
             label="Body Fat Percentage (%)"
             type="number"
-            step="0.1"
+            step="0.01"
             placeholder="Enter your body fat percentage"
             register={bfManualRegister}
             name="bodyFat"

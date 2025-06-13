@@ -15,29 +15,10 @@ const profileSchema = z.object({
   email: z.string().email("Invalid email address"),
   age: z.number().min(1, "Age must be at least 1").max(120, "Age seems too high").int("Age must be an integer"),
   gender: z.enum(['male', 'female']),
-  height: z.number().min(50, "Height must be at least 50 cm").max(250, "Height seems too high").int("Height must be an integer"),
-  currentWeight: z.number().min(1, "Current weight is required").max(300, "Weight seems too high"),
+  height: z.number().min(50, "Height must be at least 50 cm").max(250, "Height seems too high"),
   goalWeight: z.number().min(1, "Goal weight is required").max(300, "Weight seems too high"),
-  currentBodyFat: z.number().min(0, "Current body fat cannot be negative").max(100, "Body fat seems too high"),
   goalBodyFat: z.number().min(0, "Goal body fat cannot be negative").max(100, "Body fat seems too high"),
   goal: z.enum(['weight_loss', 'maintain', 'weight_gain']),
-}).superRefine((data, ctx) => {
-  // Custom validation for goals without current data
-  if (data.goalWeight && !data.currentWeight) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: "Please set your current weight before setting a goal weight",
-      path: ['goalWeight'],
-    });
-  }
-
-  if (data.goalBodyFat && !data.currentBodyFat) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: "Please set your current body fat before setting a goal body fat",
-      path: ['goalBodyFat'],
-    });
-  }
 });
 
 // profile page component
@@ -66,32 +47,26 @@ const ProfilePage = () => {
       age: user?.profile?.age || '',
       gender: user?.profile?.gender || 'male',
       height: user?.profile?.height || '',
-      currentWeight: user?.profile?.currentWeight || '',
       goalWeight: user?.profile?.goalWeight || '',
-      currentBodyFat: user?.profile?.currentBodyFat || '',
       goalBodyFat: user?.profile?.goalBodyFat || '',
       goal: user?.profile?.goal || 'maintain'
     }
   });
 
-  const currentWeight = watch('currentWeight');
-  const currentBodyFat = watch('currentBodyFat');
   const goalWeight = watch('goalWeight');
   const goalBodyFat = watch('goalBodyFat');
 
   // Check if user is missing current data
-  const missingCurrentWeight = !currentWeight || currentWeight === '';
-  const missingCurrentBodyFat = !currentBodyFat || currentBodyFat === '';
   const hasGoalWeight = goalWeight && goalWeight !== '';
   const hasGoalBodyFat = goalBodyFat && goalBodyFat !== '';
 
   useEffect(() => {
-    if (isEditing && ((hasGoalWeight && missingCurrentWeight) || (hasGoalBodyFat && missingCurrentBodyFat))) {
+    if (isEditing && ((hasGoalWeight) || (hasGoalBodyFat))) {
       setShowGoalWarning(true);
     } else {
       setShowGoalWarning(false);
     }
-  }, [isEditing, hasGoalWeight, missingCurrentWeight, hasGoalBodyFat, missingCurrentBodyFat]);
+  }, [isEditing, hasGoalWeight, hasGoalBodyFat]);
 
   // reset form with user data when user object changes or editing stops
   useEffect(() => {
@@ -103,9 +78,7 @@ const ProfilePage = () => {
         age: user.profile?.age || '',
         gender: user.profile?.gender || 'male',
         height: user.profile?.height || '',
-        currentWeight: user.profile?.currentWeight || '',
         goalWeight: user.profile?.goalWeight || '',
-        currentBodyFat: user.profile?.currentBodyFat || '',
         goalBodyFat: user.profile?.goalBodyFat || '',
         goal: user.profile?.goal || 'maintain'
       });
@@ -116,11 +89,6 @@ const ProfilePage = () => {
   const handleSave = async (data) => {
     setProfileUpdateError(null);
 
-    if ((data.goalWeight && !data.currentWeight) || (data.goalBodyFat && !data.currentBodyFat)) {
-      setProfileUpdateError("Please set your current weight and body fat before setting goals. Use the tracker to log your current measurements.");
-      return;
-    }
-
     try {
       // prepare profile data to save to AuthContext 
       const profileToSave = {
@@ -128,9 +96,7 @@ const ProfilePage = () => {
         age: parseFloat(data.age),
         gender: data.gender,
         height: parseFloat(data.height),
-        currentWeight: parseFloat(data.currentWeight),
         goalWeight: parseFloat(data.goalWeight),
-        currentBodyFat: parseFloat(data.currentBodyFat),
         goalBodyFat: parseFloat(data.goalBodyFat),
         goal: data.goal,
       };
@@ -413,6 +379,7 @@ const ProfilePage = () => {
             <Input
               label="Goal Weight (kg)"
               type="number"
+              step="0.01"
               disabled={!isEditing}
               register={register}
               name="goalWeight"
@@ -421,6 +388,7 @@ const ProfilePage = () => {
             <Input
               label="Goal Body Fat (%)"
               type="number"
+              step="0.01"
               disabled={!isEditing}
               register={register}
               name="goalBodyFat"
