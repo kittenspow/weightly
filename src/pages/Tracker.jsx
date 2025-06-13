@@ -122,6 +122,8 @@ const TrackerPage = () => {
       date: entry.date.toLocaleDateString('en-GB', dateFormatOptions), // Gunakan en-GB untuk format DD/MM/YYYY
       weight: entry.weight,
       bodyFat: entry.bodyFat,
+      weightGoal: user?.profile?.goalWeight,
+      bodyFatGoal: user?.profile?.goalBodyFat,
     }));
   }, [combinedEntries]);
 
