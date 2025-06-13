@@ -1,3 +1,4 @@
+// src/pages/Tracker.jsx
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../features/auth/AuthContext';
 import { useTrackerData } from '../features/tracker/TrackerHooks';
@@ -6,6 +7,19 @@ import WeightEntryForm from '../features/tracker/components/WeightEntryForm';
 import BodyFatEntryForm from '../features/tracker/components/BodyFatEntryForm';
 import TrackerCharts from '../features/tracker/components/TrackerCharts';
 import TrackerHistory from '../features/tracker/components/TrackerHistory';
+
+/**
+ * Helper function to format a Date object to YYYY-MM-DD local string.
+ * This is crucial for consistent date key generation and filtering.
+ * @param {Date} date - The Date object to format.
+ * @returns {string} The date formatted as 'YYYY-MM-DD' in local timezone.
+ */
+const toLocalYYYYMMDD = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
 
 // tracker page component
 const TrackerPage = () => {
@@ -28,53 +42,84 @@ const TrackerPage = () => {
   const combinedEntries = useMemo(() => {
     const combined = {};
     const latestWeightsByDate = {};
-    weightEntries.forEach(entry => {
-      const dateKey = entry.date.toISOString().split('T')[0];
+    const latestBodyFatByDate = {};
+
+    // Urutkan entri berdasarkan tanggal MENAIK untuk memastikan 'latest' benar
+    const sortedWeightEntries = [...weightEntries].sort((a, b) => a.date.getTime() - b.date.getTime());
+    const sortedBodyFatEntries = [...bodyFatEntries].sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    // Memproses untuk mendapatkan entri terbaru per tanggal LOKAL
+    sortedWeightEntries.forEach(entry => {
+      const dateKey = toLocalYYYYMMDD(entry.date); // KUNCI PERBAIKAN: Gunakan tanggal lokal
       if (!latestWeightsByDate[dateKey] || entry.date.getTime() > latestWeightsByDate[dateKey].date.getTime()) {
         latestWeightsByDate[dateKey] = entry;
       }
     });
-    const latestBodyFatByDate = {};
-    bodyFatEntries.forEach(entry => {
-      const dateKey = entry.date.toISOString().split('T')[0];
+    sortedBodyFatEntries.forEach(entry => {
+      const dateKey = toLocalYYYYMMDD(entry.date); // KUNCI PERBAIKAN: Gunakan tanggal lokal
       if (!latestBodyFatByDate[dateKey] || entry.date.getTime() > latestBodyFatByDate[dateKey].date.getTime()) {
         latestBodyFatByDate[dateKey] = entry;
       }
     });
 
-    Object.values(latestWeightsByDate).forEach(entry => {
-      const dateKey = entry.date.toISOString().split('T')[0];
-      if (!combined[dateKey]) {
-        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null };
-      }
-      combined[dateKey].weight = entry.weight;
+    // Menggabungkan entri, mengisi dengan nilai terakhir yang diketahui jika tidak ada entri spesifik
+    const allDateKeys = new Set([
+        ...Object.keys(latestWeightsByDate),
+        ...Object.keys(latestBodyFatByDate)
+    ]);
+    const sortedUniqueDateKeys = Array.from(allDateKeys).sort(); // Urutkan tanggal unik secara kronologis
+
+    const finalResultEntries = [];
+    let lastKnownWeight = user?.profile?.currentWeight; // Nilai awal dari profil
+    let lastKnownBodyFat = user?.profile?.currentBodyFat; // Nilai awal dari profil
+
+    sortedUniqueDateKeys.forEach(dateKey => {
+        const weightEntry = latestWeightsByDate[dateKey];
+        const bodyFatEntry = latestBodyFatByDate[dateKey];
+
+        const dateObject = (weightEntry ? weightEntry.date : bodyFatEntry ? bodyFatEntry.date : null);
+        if (!dateObject) return; // Seharusnya tidak terjadi
+
+        const currentWeight = weightEntry ? weightEntry.weight : lastKnownWeight;
+        const currentBodyFat = bodyFatEntry ? bodyFatEntry.bodyFat : lastKnownBodyFat;
+
+        finalResultEntries.push({
+            date: dateObject, // Gunakan objek Date asli
+            weight: currentWeight,
+            bodyFat: currentBodyFat,
+            originalWeight: weightEntry ? weightEntry.weight : null,
+            originalBodyFat: bodyFatEntry ? bodyFatEntry.bodyFat : null,
+        });
+
+        // Perbarui nilai terakhir yang diketahui
+        if (weightEntry) lastKnownWeight = weightEntry.weight;
+        if (bodyFatEntry) lastKnownBodyFat = bodyFatEntry.bodyFat;
     });
 
-    Object.values(latestBodyFatByDate).forEach(entry => {
-      const dateKey = entry.date.toISOString().split('T')[0];
-      if (!combined[dateKey]) {
-        combined[dateKey] = { date: entry.date, weight: null, bodyFat: null };
-      }
-      combined[dateKey].bodyFat = entry.bodyFat;
-      // Use the later timestamp if this body fat entry is newer
-      if (entry.date.getTime() > combined[dateKey].date.getTime()) {
-        combined[dateKey].date = entry.date;
-      }
-    });
 
-    // Sort by date descending for history table (latest first)
-    const sortedEntries = Object.values(combined).sort((a, b) => b.date.getTime() - a.date.getTime());
+    // Urutkan hasil akhir berdasarkan tanggal MENURUN untuk tabel riwayat (terbaru dulu)
+    let sortedForDisplay = finalResultEntries.sort((a, b) => b.date.getTime() - a.date.getTime());
+
     // Filter by date if filterDate is set
     if (filterDate) {
-      return sortedEntries.filter(entry => entry.date.toISOString().split('T')[0] === filterDate);
+      // KUNCI PERBAIKAN FILTER: Bandingkan string tanggal lokal yang sudah dikonversi secara konsisten
+      sortedForDisplay = sortedForDisplay.filter(entry => {
+        return toLocalYYYYMMDD(entry.date) === filterDate;
+      });
     }
-    return sortedEntries;
-  }, [weightEntries, bodyFatEntries, filterDate]);
+    return sortedForDisplay;
+  }, [weightEntries, bodyFatEntries, filterDate, user]);
+
+  const dateFormatOptions = {
+    day: '2-digit',   
+    month: '2-digit', 
+    year: 'numeric'   
+  };
 
   // Data for Recharts, sorted by date ascending for proper chart display
   const chartData = useMemo(() => {
     return [...combinedEntries].sort((a, b) => a.date.getTime() - b.date.getTime()).map(entry => ({
-      date: entry.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      date: entry.date.toLocaleDateString('en-GB', dateFormatOptions), // Gunakan en-GB untuk format DD/MM/YYYY
       weight: entry.weight,
       bodyFat: entry.bodyFat,
     }));
@@ -83,7 +128,7 @@ const TrackerPage = () => {
   if (authLoading || trackerLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
         <p className="ml-4 text-gray-600">Loading tracker data...</p>
       </div>
     );
@@ -114,7 +159,6 @@ const TrackerPage = () => {
             <TrackerCharts chartData={chartData} />
           </div>
         </div>
-
       )}
 
       {activeTab === 'entry' && (
