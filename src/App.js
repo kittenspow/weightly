@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './features/auth/AuthContext';
+
+// pages
 import { LoginPage } from './pages/authPages/LoginPage';
 import { RegisterPage } from './pages/authPages/RegisterPage';
 import HomePage from './pages/Home';
@@ -8,15 +10,22 @@ import TrackerPage from './pages/Tracker';
 import CalculatorPage from './pages/Calculator';
 import ProfilePage from './pages/Profile';
 import WelcomePage from './pages/authPages/WelcomePage';
+
+// navbar & footer
 import AuthNavbar from './components/AuthNavbar';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+
+// article
 import Article1 from './features/article/articlePages/article_1';
 import Article2 from './features/article/articlePages/article_2';
 import Article3 from './features/article/articlePages/article_3';
 import Article4 from './features/article/articlePages/article_4';
 import Article5 from './features/article/articlePages/article_5';
 import Article6 from './features/article/articlePages/article_6';
+
+// scroll to top component
+import ScrollToTop from './components/ScrollToTop';
 
 // wrapper
 const ProtectedRoute = ({ children }) => {
@@ -130,6 +139,7 @@ export default function WeightTrackerApp() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <AppContent />
       </BrowserRouter>
     </AuthProvider>
