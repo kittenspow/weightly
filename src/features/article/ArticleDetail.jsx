@@ -1,7 +1,5 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Card from '../../components/Card';
-import Button from '../../components/Button';
 
 const ArticleDetail = () => {
   const { articleId } = useParams(); 

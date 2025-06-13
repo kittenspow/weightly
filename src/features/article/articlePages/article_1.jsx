@@ -10,7 +10,7 @@ const Article1 = () => {
   };
 
   return (
-    <div className="space-y-6 font-poppins px-20 pt-3 pb-16">
+    <div className="space-y-6 font-poppins px-4 sm:px-10 md:px-20 pt-3 pb-16 max-w-6xl mx-auto">
       <div>
         <span className="text-m font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-md">
                         {articleContent.category}

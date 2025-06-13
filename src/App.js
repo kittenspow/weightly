@@ -11,7 +11,12 @@ import WelcomePage from './pages/authPages/WelcomePage';
 import AuthNavbar from './components/AuthNavbar';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Article1 from './features/article/dummy/article_1';
+import Article1 from './features/article/articlePages/article_1';
+import Article2 from './features/article/articlePages/article_2';
+import Article3 from './features/article/articlePages/article_3';
+import Article4 from './features/article/articlePages/article_4';
+import Article5 from './features/article/articlePages/article_5';
+import Article6 from './features/article/articlePages/article_6';
 
 // wrapper
 const ProtectedRoute = ({ children }) => {
@@ -100,6 +105,11 @@ const AppContent = () => {
           {/* Home Page: data diakses user yang belum login (public)*/}
           <Route path="/home" element={<HomePage />} />
           <Route path="/article001" element={<Article1 />} />
+          <Route path="/article002" element={<Article2 />} />
+          <Route path="/article003" element={<Article3 />} />
+          <Route path="/article004" element={<Article4 />} />
+          <Route path="/article005" element={<Article5 />} />
+          <Route path="/article006" element={<Article6 />} />
 
           {/* protected Routes: hanya bisa diakses jika user sudah login */}
           <Route path="/tracker" element={<ProtectedRoute><TrackerPage /></ProtectedRoute>} />
