@@ -1,6 +1,9 @@
 # Weightly
 Software Engineering project.
 
+## Contributors
+Other contributors might not appear in 'Insight' because they mostly commited in non main branches. Please check the other branches to see the contributors.
+
 ## Tech Stack
 Frontend: ReactJS, TailwindCSS
 
