@@ -2,7 +2,7 @@
 Software Engineering project.
 
 ## Contributors
-Other contributors might not appear in 'Insight' and 'Contributor' because they contributed in non main branches. Please check other branches (such as 'db-fix' - and 'minor-fix' to see the other contributors.
+Other contributors might not appear in 'Insight' and 'Contributors' because they contributed in non main branches. Please check other branches (such as 'db-fix' - and 'minor-fix') to see the other contributors.
 
 ## Tech Stack
 Frontend: ReactJS, TailwindCSS
