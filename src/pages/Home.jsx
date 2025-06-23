@@ -7,6 +7,7 @@ import ArticleWrapper from '../features/article/ArticleWrapper';
 const HomePage = () => {
   const featuresSectionRef = useRef(null);
 
+  // scroll to start
   const scrollToSection = (ref) => {
     if (ref.current) {
       ref.current.scrollIntoView({
@@ -57,7 +58,7 @@ const HomePage = () => {
         </section>
       </div>
 
-      {/* Articles Section (Dummy) */}
+      {/* Articles Section */}
       <div className='bg-primary-blue rounded-t-[2.5rem] mt-10'>
         <ArticleWrapper/>
       </div>

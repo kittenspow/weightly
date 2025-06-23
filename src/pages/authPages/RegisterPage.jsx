@@ -39,9 +39,9 @@ export const RegisterPage = () => {
       const { email, password, name, age, gender, height } = data;
       await signUp(email, password, {
         name,
-        age: parseInt(age), // Pastikan age di-parse sebagai integer
+        age: parseInt(age), // age di-parse sebagai integer
         gender,
-        height: parseInt(height), // Pastikan height di-parse sebagai integer
+        height: parseInt(height),
         currentWeight: 0,
         goalWeight: 0,
         currentBodyFat: 0,
@@ -111,7 +111,7 @@ export const RegisterPage = () => {
                   {...register("gender")}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Select Gender</option> {/* Tambahkan opsi default */}
+                  <option value="">Select Gender</option> 
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
@@ -132,6 +132,8 @@ export const RegisterPage = () => {
             {formLoading ? 'Signing Up...' : 'Sign Up'}
           </Button>
         </form>
+        
+        {/* log in button  */}
         <p className="text-center text-sm text-gray-600">
           Already have an account?{' '}
           <button onClick={() => navigate('/login')} className="text-blue-600 hover:underline" disabled={formLoading}>

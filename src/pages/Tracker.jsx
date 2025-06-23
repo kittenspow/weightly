@@ -9,8 +9,6 @@ import TrackerCharts from '../features/tracker/components/TrackerCharts';
 import TrackerHistory from '../features/tracker/components/TrackerHistory';
 
 /**
- * Helper function to format a Date object to YYYY-MM-DD local string.
- * This is crucial for consistent date key generation and filtering.
  * @param {Date} date - The Date object to format.
  * @returns {string} The date formatted as 'YYYY-MM-DD' in local timezone.
  */
@@ -102,7 +100,6 @@ const TrackerPage = () => {
 
     // Filter by date if filterDate is set
     if (filterDate) {
-      // KUNCI PERBAIKAN FILTER: Bandingkan string tanggal lokal yang sudah dikonversi secara konsisten
       sortedForDisplay = sortedForDisplay.filter(entry => {
         return toLocalYYYYMMDD(entry.date) === filterDate;
       });
@@ -110,6 +107,7 @@ const TrackerPage = () => {
     return sortedForDisplay;
   }, [weightEntries, bodyFatEntries, filterDate, user]);
 
+  // Date format
   const dateFormatOptions = {
     day: '2-digit',   
     month: '2-digit', 
@@ -127,6 +125,7 @@ const TrackerPage = () => {
     }));
   }, [combinedEntries]);
 
+  // Loading
   if (authLoading || trackerLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -147,18 +146,22 @@ const TrackerPage = () => {
       <div className="flex justify-between items-center grid grid-row-2 sm:grid-cols-2">
         <h1 className="text-3xl font-bold font-lexend text-blue-text">Tracker</h1>
         <div className="flex gap-2 justify-end mt-3 sm:mt-0">
+          {/* Button option: overview and new entry */}
           <TabButton id="overview" active={activeTab === 'overview'}>Overview</TabButton>
           <TabButton id="entry" active={activeTab === 'entry'}>New Entry</TabButton>
         </div>
       </div>
 
+      {/* Overview tab */}
       {activeTab === 'overview' && (
         <div>
+          {/* Overview */}
           <TrackerOverview
             user={user}
             weightEntries={weightEntries}
             bodyFatEntries={bodyFatEntries}
           />
+          {/* Progress chart */}
           <div className='mt-5'>
             <TrackerCharts chartData={chartData} />
           </div>
@@ -167,11 +170,13 @@ const TrackerPage = () => {
 
       {activeTab === 'entry' && (
         <div>
+          {/* New Entry */}
           <div className='grid md:grid-cols-2 gap-6'>
             <WeightEntryForm onAddWeightEntry={addWeightEntry} />
             <BodyFatEntryForm onAddBodyFatEntry={addBodyFatEntry} />
           </div>
           <div className='mt-5'>
+            {/* Tracker history */}
             <TrackerHistory
               combinedEntries={combinedEntries}
               filterDate={filterDate}

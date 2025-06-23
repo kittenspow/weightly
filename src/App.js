@@ -57,6 +57,7 @@ const AuthRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
+  // loading 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
